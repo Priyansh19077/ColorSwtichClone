@@ -1,0 +1,114 @@
+package sample;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polyline;
+import javafx.util.Duration;
+
+import java.util.Random;
+
+import static sample.Main.*;
+
+public class Controller {
+    @FXML
+    Circle c;
+    @FXML
+    Button b;
+    @FXML
+    Button b2;
+    @FXML
+    Polyline p1;
+    @FXML
+    Polyline p2;
+    @FXML
+    Polyline p3;
+    @FXML
+    Polyline p4;
+
+    static Timeline t1,t2,tp1,tp2,tp3,tp4;
+
+    public void drop(ActionEvent e){
+        c.setCenterY(c.getCenterY()+1);
+    }
+    public void rise(ActionEvent e){
+        c.setCenterY(c.getCenterY()-1);
+//        t3.play();
+    }
+    public void move1(ActionEvent e){
+        if(p1.getLayoutX()==400){
+            p1.setLayoutX(-81);
+        }
+        p1.setLayoutX(p1.getLayoutX()+1);
+    }
+    public void move2(ActionEvent e){
+        if(p2.getLayoutX()==400){
+            p2.setLayoutX(-81);
+        }
+        p2.setLayoutX(p2.getLayoutX()+1);
+    }
+    public void move3(ActionEvent e){
+        if(p3.getLayoutX()==400){
+            p3.setLayoutX(-81);
+        }
+        p3.setLayoutX(p3.getLayoutX()+1);
+    }
+    public void move4(ActionEvent e){
+        if(p4.getLayoutX()==400){
+            p4.setLayoutX(-81);
+        }
+        p4.setLayoutX(p4.getLayoutX()+1);
+    }
+    public void changecol(ActionEvent e){
+        if(p1.getFill()== Paint.valueOf("#46ff00")){
+            p1.setFill(Paint.valueOf("#fbff00"));
+        }else if(p1.getFill()== Paint.valueOf("#fbff00")){
+            p1.setFill(Paint.valueOf("#2a00ff"));
+        }else if(p1.getFill()== Paint.valueOf("#2a00ff")){
+            p1.setFill(Paint.valueOf("#ff3d00"));
+        }else{
+            p1.setFill(Paint.valueOf("#46ff00"));
+        }
+    }
+
+    public void start(){
+        t1=new Timeline(new KeyFrame(Duration.millis(20),this::drop));
+        t2=new Timeline(new KeyFrame(Duration.millis(10),this::rise));
+        tp1=new Timeline(new KeyFrame(Duration.millis(20),this::move1));
+        tp2=new Timeline(new KeyFrame(Duration.millis(20),this::move2));
+        tp3=new Timeline(new KeyFrame(Duration.millis(20),this::move3));
+        tp4=new Timeline(new KeyFrame(Duration.millis(20),this::move4));
+        t1.setCycleCount(Timeline.INDEFINITE);
+        tp1.setCycleCount(Timeline.INDEFINITE);
+        tp2.setCycleCount(Timeline.INDEFINITE);
+        tp3.setCycleCount(Timeline.INDEFINITE);
+        tp4.setCycleCount(Timeline.INDEFINITE);
+        t2.setCycleCount(25);
+        t1.play();
+        tp1.play();
+        tp2.play();
+        tp3.play();
+        tp4.play();
+        t2.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                tp1.play();
+                t1.play();
+                t2.playFromStart();
+                t2.pause();
+            }
+        });
+    }
+
+    public void gen(){
+        t1.pause();
+        t2.playFromStart();
+    }
+}
