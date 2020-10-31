@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <Button fx:id="b2" layoutX="334.0" layoutY="22.0" mnemonicParsing="false" onAction="#start" text="Start" />
+      <Button fx:id="b" layoutX="25.0" layoutY="22.0" mnemonicParsing="false" onAction="#gen" text="Move" />
+      <Circle fx:id="c" fill="DODGERBLUE" layoutX="200.0" layoutY="342.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+      <Line fx:id="p1" endX="100.0" endY="80.0" layoutX="-29.0" layoutY="94.0" startX="100.0" stroke="#f50909" strokeWidth="15.0" />
+      <Line fx:id="p2" endX="100.0" endY="80.0" layoutX="72.0" layoutY="88.0" startX="100.0" startY="13.800003051757812" stroke="#0a0cf5" strokeWidth="10.0" />
+      <Line fx:id="p3" endX="100.0" endY="80.0" layoutX="169.0" layoutY="95.0" startX="100.0" stroke="#0af51e" strokeWidth="15.0" />
+      <Line fx:id="p4" endX="100.0" endY="80.0" layoutX="249.0" layoutY="88.0" startX="100.0" startY="13.800003051757812" stroke="#e5ff00" strokeWidth="10.0" />
+      <Line fx:id="p5" endX="100.0" endY="80.0" layoutX="-9.0" layoutY="84.0" startX="100.0" startY="20.999984741210938" stroke="#f52f0c" strokeWidth="9.0" />
+      <Line fx:id="p6" endX="100.0" endY="3.8000030517578125" layoutX="87.0" layoutY="152.0" startX="100.0" startY="-38.19999694824219" stroke="#0009ff" strokeWidth="7.0" />
+      <Line fx:id="p7" endX="100.0" endY="80.0" layoutX="190.0" layoutY="83.0" startX="100.0" startY="20.999984741210938" stroke="#0cf50d" strokeWidth="9.0" />
+      <Line fx:id="p8" endX="100.0" endY="3.8000030517578125" layoutX="264.0" layoutY="152.0" startX="100.0" startY="-38.19999694824219" stroke="#c2ff00" strokeWidth="7.0" />
+   </children>
+</AnchorPane>
