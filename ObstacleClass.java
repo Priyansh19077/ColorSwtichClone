@@ -18,4 +18,5 @@ public abstract class ObstacleClass {
     public abstract void start_moving();
     public abstract void add_obstacle(Pane pane);
     public abstract void moveDown(double a);
+    public abstract void stopMoving();
 }

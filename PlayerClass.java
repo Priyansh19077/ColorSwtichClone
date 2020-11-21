@@ -76,5 +76,10 @@ public class PlayerClass {
     public Circle getBall(){
         return ball;
     }
+    public void stopMoving(){
+        for(Timeline i:timelines){
+            i.pause();
+        }
+    }
 
 }

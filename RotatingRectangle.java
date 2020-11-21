@@ -109,4 +109,8 @@ public class RotatingRectangle extends ObstacleClass{
     public void moveDown(double a) {
         y=y+a;
     }
+    @Override
+    public void stopMoving(){
+        timeline.pause();
+    }
 }
