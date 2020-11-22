@@ -25,12 +25,14 @@ public class PlayerClass {
     private boolean moving_up=false;
     private GameClass game;
     private double previous_pushing_point;
+    private int score;
     public PlayerClass(int index, ArrayList<Color> colors, Pane pane, GameClass game){
         previous_pushing_point=Screen.getPrimary().getBounds().getHeight()/2;
         this.game=game;
         this.x=250;
         this.y=400;
         this.radius=10;
+        this.score=0;
         this.pane=pane;
         this.ball=new Circle(x, y, radius, colors.get(index));
         this.timelines=new ArrayList<Timeline>();
@@ -80,6 +82,12 @@ public class PlayerClass {
         for(Timeline i:timelines){
             i.pause();
         }
+    }
+    public void addScore(int a){
+        this.score+=a;
+    }
+    public int getScore(){
+        return this.score;
     }
 
 }

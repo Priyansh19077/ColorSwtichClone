@@ -16,6 +16,7 @@ import java.util.Random;
 
 public class GameClass {
     private PlayerClass player;
+    private int start_required;
     private Button b1;
     private Button pause;
     private ArrayList<ObstacleClass> obstacles;
@@ -30,11 +31,19 @@ public class GameClass {
         this.controller=controller;
         this.pane=pane;
         this.scene=scene;
+        this.start_required=3;
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.P) {
                     pauseGame();
+                }
+                if(event.getCode()==KeyCode.G){
+                    player.stopMoving();
+                    for(ObstacleClass i:obstacles){
+                        i.stopMoving();
+                    }
+                    controller.display_end_game_menu();
                 }
             }
         });
@@ -97,5 +106,8 @@ public class GameClass {
     }
     public Scene getScene(){
         return this.scene;
+    }
+    public PlayerClass getPlayer(){
+        return this.player;
     }
 }
