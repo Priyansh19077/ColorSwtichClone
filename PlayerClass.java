@@ -36,10 +36,10 @@ public class PlayerClass {
         this.pane=pane;
         this.ball=new Circle(x, y, radius, colors.get(index));
         this.timelines=new ArrayList<Timeline>();
-        Timeline timeline1=new Timeline(new KeyFrame(Duration.millis(1), this::move_down));
+        Timeline timeline1=new Timeline(new KeyFrame(Duration.millis(0.7), this::move_down));
         timeline1.setCycleCount(-1);
-        Timeline timeline2=new Timeline(new KeyFrame(Duration.millis(1.5), this::move_up));
-        timeline2.setCycleCount(200);
+        Timeline timeline2=new Timeline(new KeyFrame(Duration.millis(0.8), this::move_up));
+        timeline2.setCycleCount(220);
         this.timelines.add(timeline1);
         this.timelines.add(timeline2);
         this.timelines.get(1).setOnFinished(new EventHandler<ActionEvent>() {
@@ -51,16 +51,16 @@ public class PlayerClass {
         });
     }
     private void move_up(ActionEvent event){
-        System.out.println(y);
+//        System.out.println(y);
         moving_up=true;
-        y=y-0.2;
+        y=y-0.3;
         ball.setCenterY(y);
         if(y<330){
             if(330-y>pane.getLayoutY()) {
                 pane.setLayoutY(330 - y);
             }
         }
-        System.out.println(y);
+//        System.out.println(y);
     }
     private void move_down(ActionEvent event){
         moving_up=false;

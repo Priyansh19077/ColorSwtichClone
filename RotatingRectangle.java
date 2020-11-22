@@ -17,8 +17,8 @@ public class RotatingRectangle extends ObstacleClass{
     private Line diag1, diag2;
     private double x, y, length;
     private double degree=0;
-    public RotatingRectangle(double x, double y, double length){
-        super();
+    public RotatingRectangle(double x, double y, double length, PlayerClass player){
+        super(player);
         timeline = new Timeline(new KeyFrame(Duration.millis(18), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.x=x;
@@ -86,9 +86,10 @@ public class RotatingRectangle extends ObstacleClass{
     }
 
     @Override
-    public void remove_obstacle() {
-
+    public void remove_obstacle(Pane pane) {
+        pane.getChildren().removeAll(line1, line2, line3, line4, corner1, corner2, corner3, corner4);
     }
+
 
     @Override
     public void add_obstacle(Pane pane) {
@@ -112,5 +113,9 @@ public class RotatingRectangle extends ObstacleClass{
     @Override
     public void stopMoving(){
         timeline.pause();
+    }
+    @Override
+    public double getY(){
+        return this.y;
     }
 }

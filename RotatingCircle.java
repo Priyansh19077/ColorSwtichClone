@@ -14,8 +14,8 @@ public class RotatingCircle extends ObstacleClass{
     private double x, y, length;
     private double degree=0;
     private Arc a1,a2, a3, a4;
-    public RotatingCircle(double x, double y, double length){
-        super();
+    public RotatingCircle(double x, double y, double length, PlayerClass player){
+        super(player);
         timeline = new Timeline(new KeyFrame(Duration.millis(18), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.x=x;
@@ -56,11 +56,16 @@ public class RotatingCircle extends ObstacleClass{
     public void detect_collision(PlayerClass player) {
 
     }
+    @Override
+    public double getY(){
+        return this.y;
+    }
 
     @Override
-    public void remove_obstacle() {
-
+    public void remove_obstacle(Pane pane) {
+        pane.getChildren().removeAll(a1, a2, a3, a4);
     }
+
 
     @Override
     public void add_obstacle(Pane pane) {
@@ -80,4 +85,5 @@ public class RotatingCircle extends ObstacleClass{
     public void stopMoving(){
         timeline.pause();
     }
+
 }

@@ -131,13 +131,6 @@ public class Controller{
     public void continue_game(GameClass g1){
         currentGame=g1;
         Pane p1=currentGame.getPane();
-//        Pane p2=new Pane();
-//        BackgroundFill bf=new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
-//        Background bg=new Background(bf);
-//        p2.setBackground(bg);
-//        p2.getChildren().addAll(p1.getChildren());
-//        p1=null;
-//        s1=new Scene(p2, 500, 620, Color.BLACK);
         this.primaryStage.setScene(g1.getScene());
         this.primaryStage.show();
         g1.resumeGame( this);
