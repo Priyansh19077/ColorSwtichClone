@@ -16,7 +16,7 @@ public class RotatingCircle extends ObstacleClass{
     private Arc a1,a2, a3, a4;
     public RotatingCircle(double x, double y, double length, PlayerClass player){
         super(player);
-        timeline = new Timeline(new KeyFrame(Duration.millis(18), this::move_obstacle));
+        timeline = new Timeline(new KeyFrame(Duration.millis(12), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.x=x;
         this.y=y;

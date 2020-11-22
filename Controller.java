@@ -224,7 +224,6 @@ public class Controller{
     }
     public void display_end_game_menu() {
         Pane pane=new Pane();
-        currentGame.getPlayer().addScore(10);
         s1=new Scene(pane, 500, 620, Color.BLACK);
         primaryStage.setScene(s1);
         Label l1=new Label("<-------GAME OVER------->");
@@ -289,6 +288,11 @@ public class Controller{
         a1.setFill(null);
         a1.setStrokeWidth(12);
         a1.setStroke(Paint.valueOf("CYAN"));
+        Label continue_label=new Label("CONTINUE WITH "+currentGame.required_stars+ " STARS");
+        continue_label.setLayoutY(300);
+        continue_label.setLayoutX(133);
+        continue_label.setStyle("-fx-background-color: #000000; -fx-font-size:17");
+        continue_label.setTextFill(Paint.valueOf("WHITE"));
         new_game.setLayoutY(380);
         new_game.setLayoutX(130);
         main_menu.setLayoutY(470);
@@ -296,7 +300,7 @@ public class Controller{
         main_menu.setMinWidth(200);
         new_game.setMinWidth(200);
 //        pane.getChildren().addAll(l1, main_menu, new_game, a1, score, best_score, actual_best_score, actual_score);
-        pane.getChildren().addAll(l1, main_menu, new_game, best_score, score, continue_game, a1);
+        pane.getChildren().addAll(l1, main_menu, new_game, best_score, score, continue_game, a1, continue_label);
         timeline.playFromStart();
         main_menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -328,6 +332,7 @@ public class Controller{
                     continue_game.setVisible(false);
                     timeline.stop();
                     a1.setVisible(false);
+                    continue_label.setVisible(false);
                     timeline.setCycleCount(0);
                     Timeline t1=new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
                         @Override

@@ -58,6 +58,8 @@ public class PlayerClass {
         if(y<330){
             if(330-y>pane.getLayoutY()) {
                 pane.setLayoutY(330 - y);
+                game.constant_score1.setLayoutY(y-330+40);
+                game.constant_stars1.setLayoutY(y-330+40);
             }
         }
 //        System.out.println(y);
@@ -88,6 +90,9 @@ public class PlayerClass {
     }
     public int getScore(){
         return this.score;
+    }
+    public GameClass getGame(){
+        return game;
     }
 
 }
