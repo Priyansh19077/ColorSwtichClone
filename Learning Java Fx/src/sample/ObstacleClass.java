@@ -5,11 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class ObstacleClass {
-    protected Timeline timeline;
-    protected PlayerClass player;
+public abstract class ObstacleClass implements Serializable {
+    transient protected Timeline timeline;
+    transient protected PlayerClass player;
     public ObstacleClass(PlayerClass player){
         this.player=player;
         //just for calling super
@@ -22,4 +23,5 @@ public abstract class ObstacleClass {
     public abstract void moveDown(double a);
     public abstract void stopMoving();
     public abstract double getY();
+    public abstract void initialize(ObstacleClass obs, PlayerClass player);
 }

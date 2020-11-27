@@ -36,6 +36,8 @@ import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static javax.swing.GroupLayout.Alignment.CENTER;
@@ -46,7 +48,7 @@ public class Controller{
     private DataClass dataclass;
     private GameClass currentGame;
     private Scene s1;
-    public void display_main_menu(Stage primaryStage){
+    public void display_main_menu(){
         Pane pane=new Pane();
         s1=new Scene(pane, 500, 620, Color.BLACK);
         primaryStage.setScene(s1);
@@ -118,15 +120,57 @@ public class Controller{
         main_menu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                display_main_menu(primaryStage);
+                display_main_menu();
             }
         });
+        HashMap<String, String> games=dataclass.fileNames();
+        ArrayList<String> saved_games=dataclass.savedGames();
+        if(saved_games.size()==0){
+            Label label=new Label("----NO GAMES SAVED YET----");
+            label.setLayoutY(320);
+            label.setLayoutX(120);
+            label.setTextFill(Paint.valueOf("#FFFAF0"));
+            label.setStyle("-fx-font-size:20;");
+            pane.getChildren().add(label);
+        }else{
+            for(int i=0;i<saved_games.size();i++){
+                Button label = new Button(games.get(saved_games.get(i)));
+                label.setLayoutY(200+i*50);
+                label.setLayoutX(100);
+                label.setMinWidth(300);
+                label.setTextFill(Paint.valueOf("#000000"));
+                label.setStyle("-fx-background-color: #A9FF0A; -fx-background-radius: 5px; -fx-font-size:17");
+                pane.getChildren().add(label);
+                int finalI = i;
+                label.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        int return_value=select_game(finalI);
+                        if(return_value==-1){
+                            pane.getChildren().clear();
+                            pane.getChildren().addAll(l1, main_menu);
+                            Label label=new Label("----ERROR IN LOADING GAME----");
+                            label.setLayoutY(320);
+                            label.setLayoutX(110);
+                            label.setTextFill(Paint.valueOf("#FFFAF0"));
+                            label.setStyle("-fx-font-size:20;");
+                            pane.getChildren().add(label);
+                        }
+                    }
+                });
+            }
+        }
         pane.getChildren().addAll(l1, main_menu);
         primaryStage.show();
     }
-    public void select_game(String file_name){ //do the deserialization here
-
-//        continue_game(saved_game);
+    public int select_game(int index){ //do the deserialization here
+        GameClass g1=dataclass.loadGame(index);
+        if(g1==null){
+            return -1;
+        }else{
+            g1.initialize(this);
+            return 1;
+        }
     }
     public void continue_game(GameClass g1){
         currentGame=g1;
@@ -188,7 +232,7 @@ public class Controller{
             @Override
             public void handle(ActionEvent event) {
                 currentGame=null;
-                display_main_menu(primaryStage);
+                display_main_menu();
             }
         });
         new_game.setOnAction(new EventHandler<ActionEvent>() {
@@ -213,14 +257,14 @@ public class Controller{
         g1.startGame();
     }
     public void runController(){
-        display_main_menu(primaryStage);
+        display_main_menu();
     }
     public Controller(DataClass data, Stage primaryStage){
         this.dataclass=data;
         this.primaryStage=primaryStage;
     }
     public void save_game(){
-
+        currentGame.serialize(dataclass);
     }
     public void display_end_game_menu() {
         Pane pane=new Pane();
@@ -306,7 +350,7 @@ public class Controller{
             @Override
             public void handle(ActionEvent event) {
                 currentGame=null;
-                display_main_menu(primaryStage);
+                display_main_menu();
                 timeline.stop();
             }
         });
@@ -367,5 +411,7 @@ public class Controller{
     }
     public void exit_game(){
         this.primaryStage.close();
+        System.out.println("Closing");
+        dataclass.serialize();
     }
 }

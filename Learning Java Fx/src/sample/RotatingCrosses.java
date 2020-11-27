@@ -172,4 +172,8 @@ public class RotatingCrosses extends ObstacleClass{
     public double getY(){
         return this.y;
     }
+    public void initialize(ObstacleClass o, PlayerClass player){
+        this.player=player;
+        return;
+    }
 }
