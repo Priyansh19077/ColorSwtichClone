@@ -22,7 +22,7 @@ public class RotatingCrosses extends ObstacleClass{
     private double degree=0;
     public RotatingCrosses(double x, double y, double length, PlayerClass player){
         super(player);
-        timeline = new Timeline(new KeyFrame(Duration.millis(18), this::move_obstacle));
+        timeline = new Timeline(new KeyFrame(Duration.millis(13), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.x=x;
         this.y=y;
