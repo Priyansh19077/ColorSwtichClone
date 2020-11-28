@@ -89,6 +89,7 @@ public class RotatingCrosses extends ObstacleClass{
         line6.setStrokeWidth(20);
         line7.setStrokeWidth(20);
         line8.setStrokeWidth(20);
+        move_obstacle(new ActionEvent());
     }
 
     @Override

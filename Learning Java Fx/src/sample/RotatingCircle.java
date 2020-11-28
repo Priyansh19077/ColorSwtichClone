@@ -45,6 +45,7 @@ public class RotatingCircle extends ObstacleClass{
         a4.setFill(null);
         a4.setStroke(Paint.valueOf("YELLOW"));
         a4.setStrokeWidth(20);
+
     }
 
     @Override
