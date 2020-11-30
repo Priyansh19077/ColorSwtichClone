@@ -22,7 +22,8 @@ public class Vertical_Line {
         this.y=y;
         tp1=new Timeline(new KeyFrame(Duration.millis(20),this::mover));
         tp2=new Timeline(new KeyFrame(Duration.millis(20),this::movel));
-        //Assume y=100
+        tp1.setCycleCount(Timeline.INDEFINITE);
+        tp2.setCycleCount(Timeline.INDEFINITE);
         v1=new Line(85,y,85,y+100);
         v2=new Line(110,y+25,110,y+75);
         v3=new Line(185,y+15,185,y+85);
