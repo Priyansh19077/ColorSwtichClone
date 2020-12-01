@@ -17,11 +17,15 @@ import java.util.Collection;
 public class VerticalLines extends ObstacleClass{
     private double y;
     private int f;
+    private double x_changes1;
+    private double x_changes2;
     transient private Line v1,v2,v3,v4,v5,v6,v7,v8;
     public VerticalLines(double y, PlayerClass player){
         super(player);
         this.y=y;
         this.f=0;
+        this.x_changes1=0;
+        this.x_changes2=0;
         timeline=new Timeline(new KeyFrame(Duration.millis(16), this::move_obstacle));
         timeline.setCycleCount(-1);
         v1=new Line(50,y,50,y+100);
@@ -73,6 +77,7 @@ public class VerticalLines extends ObstacleClass{
             this.f=0;
         }
         if(f==0){
+            x_changes1--;
             v1.setStartX(v1.getStartX()-1);
             v1.setEndX(v1.getEndX()-1);
             v3.setStartX(v3.getStartX()-1);
@@ -81,6 +86,7 @@ public class VerticalLines extends ObstacleClass{
             v5.setEndX(v5.getEndX()-1);
             v7.setStartX(v7.getStartX()-1);
             v7.setEndX(v7.getEndX()-1);
+            x_changes2++;
             v2.setStartX(v2.getStartX()+1);
             v2.setEndX(v2.getEndX()+1);
             v4.setStartX(v4.getStartX()+1);
@@ -90,6 +96,7 @@ public class VerticalLines extends ObstacleClass{
             v8.setStartX(v8.getStartX()+1);
             v8.setEndX(v8.getEndX()+1);
         }else{
+            x_changes1++;
             v1.setStartX(v1.getStartX()+1);
             v1.setEndX(v1.getEndX()+1);
             v3.setStartX(v3.getStartX()+1);
@@ -98,6 +105,7 @@ public class VerticalLines extends ObstacleClass{
             v5.setEndX(v5.getEndX()+1);
             v7.setStartX(v7.getStartX()+1);
             v7.setEndX(v7.getEndX()+1);
+            x_changes2--;
             v2.setStartX(v2.getStartX()-1);
             v2.setEndX(v2.getEndX()-1);
             v4.setStartX(v4.getStartX()-1);
@@ -149,14 +157,14 @@ public class VerticalLines extends ObstacleClass{
         this.player=player;
         timeline=new Timeline(new KeyFrame(Duration.millis(20), this::move_obstacle));
         timeline.setCycleCount(-1);
-        v1=new Line(50,y,50,y+100);
-        v2=new Line(90,y+25,90,y+75);
-        v3=new Line(150,y+15,150,y+85);
-        v4=new Line(190,y+30,190,y+70);
-        v5=new Line(250,y,250,y+100);
-        v6=new Line(290,y+25,290,y+75);
-        v7=new Line(350,y+15,350,y+85);
-        v8=new Line(390,y+30,390,y+70);
+        v1=new Line(50+x_changes1,y,50+x_changes1,y+100);
+        v2=new Line(90+x_changes2,y+25,90+x_changes2,y+75);
+        v3=new Line(150+x_changes1,y+15,150+x_changes1,y+85);
+        v4=new Line(190+x_changes2,y+30,190+x_changes2,y+70);
+        v5=new Line(250+x_changes1,y,250+x_changes1,y+100);
+        v6=new Line(290+x_changes2,y+25,290+x_changes2,y+75);
+        v7=new Line(350+x_changes1,y+15,350+x_changes1,y+85);
+        v8=new Line(390+x_changes2,y+30,390+x_changes2,y+70);
         v1.setStrokeWidth(18);
         v2.setStrokeWidth(10);
         v3.setStrokeWidth(13);

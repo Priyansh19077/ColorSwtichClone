@@ -11,11 +11,15 @@ import javafx.util.Duration;
 public class HorizontalLine extends ObstacleClass{
     private double y;
     private double y1;
+    private double x_changes1;
+    private double x_changes2;
     transient Line v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16;
     public HorizontalLine(double y4, PlayerClass player){
         super(player);
         this.y=y4+15;
         this.y1=-135;
+        this.x_changes1=0;
+        this.x_changes2=0;
         timeline=new Timeline(new KeyFrame(Duration.millis(5),this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         v1=new Line(8,y,123,y);
@@ -135,6 +139,7 @@ public class HorizontalLine extends ObstacleClass{
             v16.setStartX(869);
             v16.setEndX(984);
         }
+//        x_changes1++;
         v1.setStartX(v1.getStartX()+1);
         v1.setEndX(v1.getEndX()+1);
         v2.setStartX(v2.getStartX()+1);
@@ -151,6 +156,7 @@ public class HorizontalLine extends ObstacleClass{
         v7.setEndX(v7.getEndX()+1);
         v8.setStartX(v8.getStartX()+1);
         v8.setEndX(v8.getEndX()+1);
+//        x_changes2--;
         v9.setStartX(v9.getStartX()-1);
         v9.setEndX(v9.getEndX()-1);
         v10.setStartX(v10.getStartX()-1);
