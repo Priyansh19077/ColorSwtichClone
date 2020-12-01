@@ -49,7 +49,7 @@ public class ColorChangerClass implements Serializable {
                     removeColorChanger(pane);
                     t1.stop();
                 }
-                degree = (degree - 1) % 360;
+                degree = (degree - 7) % 360;
                 a1.setStartAngle(degree);
                 a2.setStartAngle((degree+90)%360);
                 a3.setStartAngle((degree+180)%360);
@@ -58,7 +58,7 @@ public class ColorChangerClass implements Serializable {
         }));
         t1.setCycleCount(-1);
 //        t1.play();
-        int length=40;
+        int length=35;
         a1 = new Arc(x, y, length/2, length/2, 0, 90);
         a2 = new Arc(x, y, length/2, length/2, 90, 90);
         a3 = new Arc(x, y, length/2, length/2, 180, 90);
@@ -115,7 +115,7 @@ public class ColorChangerClass implements Serializable {
                     hidden=true;
                     t1.stop();
                 }
-                degree = (degree - 1) % 360;
+                degree = (degree - 7) % 360;
                 a1.setStartAngle(degree);
                 a2.setStartAngle((degree+90)%360);
                 a3.setStartAngle((degree+180)%360);
@@ -125,7 +125,7 @@ public class ColorChangerClass implements Serializable {
         t1.setCycleCount(-1);
 //        if(!this.hidden)
 //        t1.play();
-        int length=40;
+        int length=35;
         a1 = new Arc(x, y, length/2, length/2, 0, 90);
         a2 = new Arc(x, y, length/2, length/2, 90, 90);
         a3 = new Arc(x, y, length/2, length/2, 180, 90);

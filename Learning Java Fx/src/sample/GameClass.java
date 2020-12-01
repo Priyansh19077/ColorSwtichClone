@@ -99,6 +99,8 @@ public class GameClass implements Serializable {
         available_obs.add(new RotatingRectangle(250, 150, 80, player));
         available_obs.add(new RotatingCrosses(250, 250, 80, player));
         available_obs.add(new RotatingCirclesExtra(250, 250, 80, player));
+        available_obs.add(new VerticalLines(250, player));
+        available_obs.add(new HorizontalLine(0, player));
         Random rand=new Random();
         for(int i=0;i<3;i++){
             int p=rand.nextInt(available_obs.size());
@@ -110,7 +112,10 @@ public class GameClass implements Serializable {
                 obstacles.add(new RotatingCrosses(250, 150-number_of_obstacles*400, 90, player));
             }else if(available_obs.get(p).getClass()==new RotatingCirclesExtra(0, 0, 0, player).getClass()){
                 obstacles.add(new RotatingCirclesExtra(250, 150-number_of_obstacles*400, 200, player));
-            }
+            }else if(available_obs.get(p).getClass()==new VerticalLines(0, player).getClass())
+                obstacles.add(new VerticalLines(150-number_of_obstacles*400-40, player));
+            else if(available_obs.get(p).getClass()==new HorizontalLine(0, player).getClass())
+                obstacles.add(new HorizontalLine(150-number_of_obstacles*400+40, player));
             stars.add(new StarClass(210, 150 - number_of_obstacles * 400 - 40, 10, player, pane, 60));
             ColorChangerClass c1=new ColorChangerClass(250, 150-number_of_obstacles*400-200, player, pane);
             colorChangers.add(c1);
@@ -134,15 +139,18 @@ public class GameClass implements Serializable {
     }
     public void startGame()
     {
+
+        timeline.setCycleCount(-1);
+        timeline.play();
         // update timerLabel
         timerLabel=new Button("3");
-        timerLabel.setVisible(false);
+        timerLabel.setVisible(true);
         timerLabel.setLayoutY(y_value);
-        timerLabel.setLayoutX(200);
+        timerLabel.setLayoutX(195);
         timerLabel.setTextFill(Paint.valueOf("FFFB8A"));
         timerLabel.setStyle("-fx-background-color: transparent; -fx-font-size:60;");
         pane.getChildren().addAll(timerLabel);
-        Timeline timeline1=new Timeline(new KeyFrame(Duration.millis(300), new EventHandler<ActionEvent>() {
+        Timeline timeline1=new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 int p=Integer.parseInt(timerLabel.getText().toString());
@@ -150,12 +158,13 @@ public class GameClass implements Serializable {
                 timerLabel.setText(String.valueOf(p));
             }
         }));
-        timeline1.setCycleCount(1);
+        timeline1.setCycleCount(3);
         timeline1.playFromStart();
         timeline1.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 player.startMoving();
+                timerLabel.setVisible(false);
                 for(ObstacleClass i:obstacles){
                     i.start_moving();
                 }
@@ -163,8 +172,6 @@ public class GameClass implements Serializable {
                     i.startMoving();
                 for(ColorChangerClass i:colorChangers)
                     i.startMoving();
-                timeline.setCycleCount(-1);
-                timeline.play();
             }
         });
     }
@@ -239,7 +246,10 @@ public class GameClass implements Serializable {
             }else if(available_obs.get(p).getClass()==new RotatingCirclesExtra(0, 0, 0, player).getClass()){
                 obstacles.add(new RotatingCirclesExtra(250, 150-number_of_obstacles*400, 200, player));
                 System.out.println(1000);
-            }
+            }else if(available_obs.get(p).getClass()==new VerticalLines(0, player).getClass())
+                obstacles.add(new VerticalLines(150-number_of_obstacles*400-40, player));
+            else if(available_obs.get(p).getClass()==new HorizontalLine(0, player).getClass())
+                obstacles.add(new HorizontalLine(150-number_of_obstacles*400+40, player));
             obstacles.get(obstacles.size()-1).add_obstacle(pane);
             stars.add(new StarClass(210, 150 - number_of_obstacles * 400 - 40, 10, player, pane, 60));
             colorChangers.add(new ColorChangerClass(250, 150-number_of_obstacles*400-200, player, pane));
@@ -294,8 +304,10 @@ public class GameClass implements Serializable {
         available_obs=new ArrayList<ObstacleClass>();
         available_obs.add(new RotatingCircle(250, 150, 80, player));
         available_obs.add(new RotatingRectangle(250, 150, 80, player));
-        available_obs.add(new RotatingCrosses(250, 150, 80, player));
-        available_obs.add(new RotatingCirclesExtra(250, 150, 80, player));
+        available_obs.add(new RotatingCrosses(250, 250, 80, player));
+        available_obs.add(new RotatingCirclesExtra(250, 250, 80, player));
+        available_obs.add(new VerticalLines(250, player));
+        available_obs.add(new HorizontalLine(0, player));
         constant_stars1=new Button("STARS  "+stars_remaining);
         constant_score1=new Button("SCORE  "+player.getScore());
         constant_score1.setLayoutX(5);
@@ -368,7 +380,10 @@ public class GameClass implements Serializable {
                 obstacles.add(new RotatingCrosses(250, 150-number_of_obstacles*400, 90, player));
             }else if(available_obs.get(p).getClass()==new RotatingCirclesExtra(0, 0, 0, player).getClass()){
                 obstacles.add(new RotatingCirclesExtra(250, 150-number_of_obstacles*400, 200, player));
-            }
+            }else if(available_obs.get(p).getClass()==new VerticalLines(0, player).getClass())
+                obstacles.add(new VerticalLines(150-number_of_obstacles*400-40, player));
+            else if(available_obs.get(p).getClass()==new HorizontalLine(0, player).getClass())
+                obstacles.add(new HorizontalLine(150-number_of_obstacles*400+40, player));
             obstacles.get(obstacles.size()-1).add_obstacle(pane);
             stars.add(new StarClass(210, 150 - number_of_obstacles * 400 - 40, 10, player, pane, 60));
             colorChangers.add(new ColorChangerClass(250, 150-number_of_obstacles*400-200, player, pane));
