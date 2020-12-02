@@ -4,154 +4,114 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.logging.SocketHandler;
 
 public class RotatingCirclesExtra extends ObstacleClass{
     private double x, y, length;
+    private int n;
     private double degree=120;
-    transient private Arc a1,a2, a3, a4;
-    transient private Arc a5,a6, a7, a8;
-    transient private Arc a9,a10, a11, a12;
-    public RotatingCirclesExtra(double x, double y, double length, PlayerClass player){
+    transient private ArrayList<Arc> arcs;
+    transient private Arc a1;
+    transient private ArrayList<Color> colors;
+    transient private Timeline collision;
+    public RotatingCirclesExtra(double x, double y, double length, int n, PlayerClass player){
         super(player, player.getGame());
         timeline = new Timeline(new KeyFrame(Duration.millis(15), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
+        collision=new Timeline(new KeyFrame(Duration.millis(50),this::detect_collision));
+        collision.setCycleCount(-1);
+        arcs=new ArrayList<Arc>();
+        colors=new ArrayList<Color>();
+        colors.add((Color)Paint.valueOf("RED"));
+        colors.add((Color)Paint.valueOf("GREEN"));
+        colors.add((Color)Paint.valueOf("YELLOW"));
+        colors.add((Color)Paint.valueOf("BLUE"));
         this.x=x;
         this.y=y;
+        this.n=n;
         this.length=length;
-        a1 = new Arc(x, y, length/2, length/2, 0, 83);
-        a2 = new Arc(x, y, length/2, length/2, 0, 83);
-        a3 = new Arc(x, y, length/2, length/2, 0, 83);
-        a4 = new Arc(x, y, length/2, length/2, 0, 83);
-        a1.setStartAngle(degree);
-        a2.setStartAngle((degree+90)%360);
-        a3.setStartAngle((degree+180)%360);
-        a4.setStartAngle((degree+270)%360);
-        a1.setType(ArcType.OPEN);
-        a1.setFill(null);
-        a1.setStroke(Paint.valueOf("RED"));
-        a1.setStrokeWidth(10);
-        a2.setType(ArcType.OPEN);
-        a2.setFill(null);
-        a2.setStroke(Paint.valueOf("BLUE"));
-        a2.setStrokeWidth(10);
-        a3.setType(ArcType.OPEN);
-        a3.setFill(null);
-        a3.setStroke(Paint.valueOf("GREEN"));
-        a3.setStrokeWidth(10);
-        a4.setType(ArcType.OPEN);
-        a4.setFill(null);
-        a4.setStroke(Paint.valueOf("YELLOW"));
-        a4.setStrokeWidth(10);
-
-        a5 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a6 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a7 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a8 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a5.setStartAngle(-(degree)%360);
-        a6.setStartAngle(-(degree+90)%360);
-        a7.setStartAngle(-(degree+180)%360);
-        a8.setStartAngle(-(degree+270)%360);
-        a5.setType(ArcType.OPEN);
-        a5.setFill(null);
-        a5.setStroke(Paint.valueOf("YELLOW"));
-        a5.setStrokeWidth(10);
-        a6.setType(ArcType.OPEN);
-        a6.setFill(null);
-        a6.setStroke(Paint.valueOf("GREEN"));
-        a6.setStrokeWidth(10);
-        a7.setType(ArcType.OPEN);
-        a7.setFill(null);
-        a7.setStroke(Paint.valueOf("BLUE"));
-        a7.setStrokeWidth(10);
-        a8.setType(ArcType.OPEN);
-        a8.setFill(null);
-        a8.setStroke(Paint.valueOf("RED"));
-        a8.setStrokeWidth(10);
-
-        a9 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-        a10 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-        a11 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-        a12 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-
-        a9.setStartAngle(-(degree)%360);
-        a10.setStartAngle(-(degree+90)%360);
-        a11.setStartAngle(-(degree+180)%360);
-        a12.setStartAngle(-(degree+270)%360);
-        a9.setType(ArcType.OPEN);
-        a9.setFill(null);
-        a9.setStroke(Paint.valueOf("YELLOW"));
-        a9.setStrokeWidth(10);
-        a10.setType(ArcType.OPEN);
-        a10.setFill(null);
-        a10.setStroke(Paint.valueOf("GREEN"));
-        a10.setStrokeWidth(10);
-        a11.setType(ArcType.OPEN);
-        a11.setFill(null);
-        a11.setStroke(Paint.valueOf("BLUE"));
-        a11.setStrokeWidth(10);
-        a12.setType(ArcType.OPEN);
-        a12.setFill(null);
-        a12.setStroke(Paint.valueOf("RED"));
-        a12.setStrokeWidth(10);
+        for(int i=0;i<4*n;i++){
+            double radius=(length-30*(i/4))/2;
+            double curr_degree=(degree+((i*90)%360))%360;
+            a1 = new Arc(x, y, radius, radius, 0, 84-(2*(i/4)));
+            a1.setStartAngle(curr_degree);
+            a1.setType(ArcType.OPEN);
+            a1.setFill(null);
+            if(i%8<=3) {
+                a1.setStroke(colors.get(i % 4));
+            }else{
+                if(i%2==0) {
+                    a1.setStroke(colors.get((i + 1) % 4));
+                }else{
+                    a1.setStroke(colors.get((i - 1) % 4));
+                }
+            }
+            a1.setStrokeWidth(10);
+            arcs.add(a1);
+        }
         move_obstacle(new ActionEvent());
     }
 
     @Override
     public void move_obstacle(ActionEvent event) {
         degree = (degree + 1) % 360;
-        if(a1.getStroke()!=player.getBall().getFill()) {
-            ArrayList<Arc> one=new ArrayList<Arc>();
-            one.add(a2); one.add(a3); one.add(a4);
+        if(player.getBall().getFill()==colors.get(0) || player.getBall().getFill()==colors.get(2)){
+            Color c1=colors.get(0);
             for(int i=0;i<3;i++){
-                if(one.get(i).getStroke()==player.getBall().getFill()) {
-                    one.get(i).setStroke(a1.getStroke());
-                    a1.setStroke(player.getBall().getFill());
-                }
+                colors.set(i, colors.get((i+1)%4));
             }
-            one.clear();
-            one.add(a5); one.add(a6); one.add(a7);
-            for(int i=0;i<3;i++){
-                if(one.get(i).getStroke()==player.getBall().getFill()) {
-                    one.get(i).setStroke(a8.getStroke());
-                    a8.setStroke(player.getBall().getFill());
+            colors.set(3, c1);
+            for(int i=0;i<4*n;i++){
+                double radius=(length-30*(i/4))/2;
+                double curr_degree=(degree+((i*90)%360))%360;
+                a1 = arcs.get(i);
+                a1.setStartAngle(curr_degree);
+                a1.setType(ArcType.OPEN);
+                a1.setFill(null);
+                if(i%8<=3) {
+                    a1.setStroke(colors.get(i % 4));
+                }else{
+                    if(i%2==0) {
+                        a1.setStroke(colors.get((i + 1) % 4));
+                    }else{
+                        a1.setStroke(colors.get((i - 1) % 4));
+                    }
                 }
-            }
-            one.clear();
-            one.add(a10); one.add(a11); one.add(a9);
-            for(int i=0;i<3;i++){
-                if(one.get(i).getStroke()==player.getBall().getFill()) {
-                    one.get(i).setStroke(a12.getStroke());
-                    a12.setStroke(player.getBall().getFill());
-                }
+                a1.setStrokeWidth(10);
+                arcs.set(i, a1);
             }
         }
-        a1.setStartAngle(degree);
-        a2.setStartAngle((degree+90)%360);
-        a3.setStartAngle((degree+180)%360);
-        a4.setStartAngle((degree+270)%360);
-
-        a5.setStartAngle(-(degree)%360);
-        a6.setStartAngle(-(degree+90)%360);
-        a7.setStartAngle(-(degree+180)%360);
-        a8.setStartAngle(-(degree+270)%360);
-
-
-        a9.setStartAngle(-a1.getStartAngle());
-        a10.setStartAngle(-a2.getStartAngle());
-        a11.setStartAngle(-a3.getStartAngle());
-        a12.setStartAngle(-a4.getStartAngle());
+        for(int i=0;i<4*n;i++){
+            double curr_degree1=(degree+((i*90)%360))%360;
+            double curr_degree2=(-curr_degree1)%360;
+            if(i%8<=3){
+                arcs.get(i).setStartAngle(curr_degree1);
+            }else{
+                arcs.get(i).setStartAngle(curr_degree2);
+            }
+        }
     }
 
     @Override
     public void detect_collision(ActionEvent event) {
-
+        Circle ball=player.getBall();
+        for(int i=0;i<4*n;i++){
+            Shape shape= Shape.intersect(ball, arcs.get(i));
+            if(shape.getBoundsInLocal().getWidth()!=-1 && arcs.get(i).getStroke()!=ball.getFill()){
+                System.out.println("Game over!! Collision Detected");
+                timeline.pause();
+                collision.pause();
+                player.stopMoving();
+                game.endGame();
+            }
+        }
     }
     @Override
     public double getY(){
@@ -160,18 +120,22 @@ public class RotatingCirclesExtra extends ObstacleClass{
 
     @Override
     public void remove_obstacle(Pane pane) {
-        pane.getChildren().removeAll(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12);
+        for(int i=0;i<4*n;i++)
+            pane.getChildren().remove(arcs.get(i));
         timeline.stop();
+        collision.stop();
     }
 
 
     @Override
     public void add_obstacle(Pane pane) {
-        pane.getChildren().addAll(a1,a2,a3,a4, a5, a6, a7, a8, a9, a10, a11, a12);
+        for(int i=0;i<4*n;i++)
+            pane.getChildren().add(arcs.get(i));
     }
 
     public void start_moving(){
         timeline.play();
+        collision.play();
     }
 
     @Override
@@ -182,88 +146,42 @@ public class RotatingCirclesExtra extends ObstacleClass{
     @Override
     public void stopMoving(){
         timeline.pause();
+        collision.pause();
     }
 
     @Override
     public void initialize(ObstacleClass obs, PlayerClass player){
         this.player=player;
+        this.game=player.getGame();
         timeline = new Timeline(new KeyFrame(Duration.millis(15), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
-        a1 = new Arc(x, y, length/2, length/2, 0, 83);
-        a2 = new Arc(x, y, length/2, length/2, 0, 83);
-        a3 = new Arc(x, y, length/2, length/2, 0, 83);
-        a4 = new Arc(x, y, length/2, length/2, 0, 83);
-        a1.setStartAngle(degree);
-        a2.setStartAngle((degree+90)%360);
-        a3.setStartAngle((degree+180)%360);
-        a4.setStartAngle((degree+270)%360);
-        a1.setType(ArcType.OPEN);
-        a1.setFill(null);
-        a1.setStroke(Paint.valueOf("RED"));
-        a1.setStrokeWidth(10);
-        a2.setType(ArcType.OPEN);
-        a2.setFill(null);
-        a2.setStroke(Paint.valueOf("BLUE"));
-        a2.setStrokeWidth(10);
-        a3.setType(ArcType.OPEN);
-        a3.setFill(null);
-        a3.setStroke(Paint.valueOf("GREEN"));
-        a3.setStrokeWidth(10);
-        a4.setType(ArcType.OPEN);
-        a4.setFill(null);
-        a4.setStroke(Paint.valueOf("YELLOW"));
-        a4.setStrokeWidth(10);
-
-        a5 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a6 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a7 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a8 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
-        a5.setStartAngle(-(degree)%360);
-        a6.setStartAngle(-(degree+90)%360);
-        a7.setStartAngle(-(degree+180)%360);
-        a8.setStartAngle(-(degree+270)%360);
-        a5.setType(ArcType.OPEN);
-        a5.setFill(null);
-        a5.setStroke(Paint.valueOf("YELLOW"));
-        a5.setStrokeWidth(10);
-        a6.setType(ArcType.OPEN);
-        a6.setFill(null);
-        a6.setStroke(Paint.valueOf("GREEN"));
-        a6.setStrokeWidth(10);
-        a7.setType(ArcType.OPEN);
-        a7.setFill(null);
-        a7.setStroke(Paint.valueOf("BLUE"));
-        a7.setStrokeWidth(10);
-        a8.setType(ArcType.OPEN);
-        a8.setFill(null);
-        a8.setStroke(Paint.valueOf("RED"));
-        a8.setStrokeWidth(10);
-
-        a9 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-        a10 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-        a11 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-        a12 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
-
-        a9.setStartAngle(-(degree)%360);
-        a10.setStartAngle(-(degree+90)%360);
-        a11.setStartAngle(-(degree+180)%360);
-        a12.setStartAngle(-(degree+270)%360);
-        a9.setType(ArcType.OPEN);
-        a9.setFill(null);
-        a9.setStroke(Paint.valueOf("YELLOW"));
-        a9.setStrokeWidth(10);
-        a10.setType(ArcType.OPEN);
-        a10.setFill(null);
-        a10.setStroke(Paint.valueOf("GREEN"));
-        a10.setStrokeWidth(10);
-        a11.setType(ArcType.OPEN);
-        a11.setFill(null);
-        a11.setStroke(Paint.valueOf("BLUE"));
-        a11.setStrokeWidth(10);
-        a12.setType(ArcType.OPEN);
-        a12.setFill(null);
-        a12.setStroke(Paint.valueOf("RED"));
-        a12.setStrokeWidth(10);
+        collision=new Timeline(new KeyFrame(Duration.millis(50),this::detect_collision));
+        collision.setCycleCount(-1);
+        arcs=new ArrayList<Arc>();
+        colors=new ArrayList<Color>();
+        colors.add((Color)Paint.valueOf("RED"));
+        colors.add((Color)Paint.valueOf("GREEN"));
+        colors.add((Color)Paint.valueOf("YELLOW"));
+        colors.add((Color)Paint.valueOf("BLUE"));
+        for(int i=0;i<4*n;i++){
+            double radius=(length-30*(i/4))/2;
+            double curr_degree=(degree+((i*90)%360))%360;
+            a1 = new Arc(x, y, radius, radius, 0, 84-(2*(i/4)));
+            a1.setStartAngle(curr_degree);
+            a1.setType(ArcType.OPEN);
+            a1.setFill(null);
+            if(i%8<=3) {
+                a1.setStroke(colors.get(i % 4));
+            }else{
+                if(i%2==0) {
+                    a1.setStroke(colors.get((i + 1) % 4));
+                }else{
+                    a1.setStroke(colors.get((i - 1) % 4));
+                }
+            }
+            a1.setStrokeWidth(10);
+            arcs.add(a1);
+        }
         move_obstacle(new ActionEvent());
     }
 }
