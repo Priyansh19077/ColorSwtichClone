@@ -6,8 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
+
+import java.security.Key;
+import java.util.ArrayList;
 
 
 public class RotatingRectangle extends ObstacleClass{
@@ -15,48 +20,57 @@ public class RotatingRectangle extends ObstacleClass{
     transient private Line line1, line2, line3, line4;
     transient private Line corner1, corner2, corner3, corner4;
     transient private Line diag1, diag2;
+    transient private ArrayList<Line> lines;
+    transient private ArrayList<Line> corners;
+    transient private Timeline collision;
     private double x, y, length;
+    private double pi=3.1415926535897932;
     private double degree=0;
+    private double p;
     public RotatingRectangle(double x, double y, double length, PlayerClass player){
         super(player, player.getGame());
         timeline = new Timeline(new KeyFrame(Duration.millis(12), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
+        collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
+        collision.setCycleCount(-1);
         this.x=x;
         this.y=y;
         this.length=length;
+        this.p=length+10;
+        lines=new ArrayList<Line>();
+        corners=new ArrayList<Line>();
         line1=new Line(x-length, y-length, x+length, y-length);
-        diag2=new Line(x-length, y+length, x+length, y-length);
         line2=new Line(x+length, y-length, x+length, y+length);
-        diag1=new Line(x-length, y-length, x+length, y+length);
         line3=new Line(x+length, y+length, x-length, y-length);
         line4=new Line(x-length, y+length, x-length, y-length);
-        corner1=new Line(x-length,y-length,x-length, y-length);
-        corner2=new Line(x-length,y+length,x-length, y+length);
-        corner3=new Line(x+length,y-length,x+length, y-length);
-        corner4=new Line(x+length,y+length,x+length, x+length);
-        corner1.setStrokeWidth(20);
-        corner2.setStrokeWidth(20);
-        corner3.setStrokeWidth(20);
-        corner4.setStrokeWidth(20);
-        corner1.setStroke(Paint.valueOf("RED"));
-        corner2.setStroke(Paint.valueOf("YELLOW"));
-        corner3.setStroke(Paint.valueOf("BLUE"));
-        corner4.setStroke(Paint.valueOf("GREEN"));
         line1.setStroke(Paint.valueOf("RED"));
         line2.setStroke(Paint.valueOf("BLUE"));
         line3.setStroke(Paint.valueOf("GREEN"));
         line4.setStroke(Paint.valueOf("YELLOW"));
-        line1.setStrokeWidth(20);
-        line2.setStrokeWidth(20);
-        line3.setStrokeWidth(20);
-        line4.setStrokeWidth(20);
-        double pi=3.1415926535897932;
+        diag1=new Line(x-length, y-length, x+length, y+length);
+        diag2=new Line(x-length, y+length, x+length, y-length);
+        corner1=new Line(x-length,y-length,x-length, y-length);
+        corner2=new Line(x-length,y+length,x-length, y+length);
+        corner3=new Line(x+length,y-length,x+length, y-length);
+        corner4=new Line(x+length,y+length,x+length, x+length);
+        corner1.setStroke(Paint.valueOf("RED"));
+        corner2.setStroke(Paint.valueOf("YELLOW"));
+        corner3.setStroke(Paint.valueOf("BLUE"));
+        corner4.setStroke(Paint.valueOf("GREEN"));
+        corners.add(corner1);
+        corners.add(corner2);
+        corners.add(corner3);
+        corners.add(corner4);
+        lines.add(line1);
+        lines.add(line2);
+        lines.add(line3);
+        lines.add(line4);
+        for(int i=0;i<4;i++) {
+            corners.get(i).setStrokeWidth(20);
+            lines.get(i).setStrokeWidth(20);
+            corners.get(i).setRotate(degree+45);
+        }
         double v1=Math.toRadians((degree));
-        corner1.setRotate(degree+45);
-        corner2.setRotate(degree+45);
-        corner3.setRotate(degree+45);
-        corner4.setRotate(degree+45);
-        double p=length+10;
         diag1.setStartX(x+p*Math.cos(v1));
         diag1.setStartY(y+p*Math.sin(v1));
         diag1.setEndX(x+p*Math.cos(v1+pi));
@@ -80,10 +94,8 @@ public class RotatingRectangle extends ObstacleClass{
         degree = (degree + 1) % 360;
         double pi=3.1415926535897932;
         double v1=Math.toRadians((degree));
-        corner1.setRotate(degree+45);
-        corner2.setRotate(degree+45);
-        corner3.setRotate(degree+45);
-        corner4.setRotate(degree+45);
+        for(int i=0;i<4;i++)
+            corners.get(i).setRotate(degree+45);
         double p=length+10;
         diag1.setStartX(x+p*Math.cos(v1));
         diag1.setStartY(y+p*Math.sin(v1));
@@ -105,13 +117,40 @@ public class RotatingRectangle extends ObstacleClass{
 
     @Override
     public void detect_collision(ActionEvent event) {
-
+        Circle ball=player.getBall();
+        int number=0;
+        for(int i=0;i<4;i++){
+            Shape intersection=Shape.intersect(ball, corners.get(i));
+            if(intersection.getBoundsInLocal().getWidth()!=-1){
+                number++;
+            }
+            if(corners.get(i).getStroke()!=ball.getFill() && intersection.getBoundsInLocal().getWidth()!=-1){
+                System.out.println("Game over !! Collision");
+                timeline.pause();
+                collision.pause();
+                player.stopMoving();
+                game.endGame();
+            }
+        }
+        if(number>0)
+            return;
+        for(int i=0;i<4;i++){
+            Shape intersection=Shape.intersect(ball, lines.get(i));
+            if(lines.get(i).getStroke()!=ball.getFill() && intersection.getBoundsInLocal().getWidth()!=-1){
+                System.out.println("Game over !! Collision");
+                timeline.pause();
+                collision.pause();
+                player.stopMoving();
+                game.endGame();
+            }
+        }
     }
 
     @Override
     public void remove_obstacle(Pane pane) {
         pane.getChildren().removeAll(line1, line2, line3, line4, corner1, corner2, corner3, corner4);
         timeline.stop();
+        collision.stop();
     }
 
 
@@ -122,7 +161,9 @@ public class RotatingRectangle extends ObstacleClass{
 
     public void start_moving(){
         timeline.play();
+        collision.play();
     }
+
     private void change_coordintate(double a, double b, double c, double d, Line n1){
         n1.setStartX(a);
         n1.setStartY(b);
@@ -137,6 +178,7 @@ public class RotatingRectangle extends ObstacleClass{
     @Override
     public void stopMoving(){
         timeline.pause();
+        collision.pause();
     }
     @Override
     public double getY(){
@@ -145,41 +187,45 @@ public class RotatingRectangle extends ObstacleClass{
     @Override
     public void initialize(ObstacleClass obs, PlayerClass player){
         this.player=player;
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(12), this::move_obstacle));
-        this.timeline.setCycleCount(Timeline.INDEFINITE);
+        this.game=player.getGame();
+        timeline = new Timeline(new KeyFrame(Duration.millis(12), this::move_obstacle));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
+        collision.setCycleCount(-1);
+        lines=new ArrayList<Line>();
+        corners=new ArrayList<Line>();
         line1=new Line(x-length, y-length, x+length, y-length);
-        diag2=new Line(x-length, y+length, x+length, y-length);
         line2=new Line(x+length, y-length, x+length, y+length);
-        diag1=new Line(x-length, y-length, x+length, y+length);
         line3=new Line(x+length, y+length, x-length, y-length);
         line4=new Line(x-length, y+length, x-length, y-length);
-        corner1=new Line(x-length,y-length,x-length, y-length);
-        corner2=new Line(x-length,y+length,x-length, y+length);
-        corner3=new Line(x+length,y-length,x+length, y-length);
-        corner4=new Line(x+length,y+length,x+length, x+length);
-        corner1.setStrokeWidth(20);
-        corner2.setStrokeWidth(20);
-        corner3.setStrokeWidth(20);
-        corner4.setStrokeWidth(20);
-        corner1.setStroke(Paint.valueOf("RED"));
-        corner2.setStroke(Paint.valueOf("YELLOW"));
-        corner3.setStroke(Paint.valueOf("BLUE"));
-        corner4.setStroke(Paint.valueOf("GREEN"));
         line1.setStroke(Paint.valueOf("RED"));
         line2.setStroke(Paint.valueOf("BLUE"));
         line3.setStroke(Paint.valueOf("GREEN"));
         line4.setStroke(Paint.valueOf("YELLOW"));
-        line1.setStrokeWidth(20);
-        line2.setStrokeWidth(20);
-        line3.setStrokeWidth(20);
-        line4.setStrokeWidth(20);
-        double pi=3.1415926535897932;
+        diag1=new Line(x-length, y-length, x+length, y+length);
+        diag2=new Line(x-length, y+length, x+length, y-length);
+        corner1=new Line(x-length,y-length,x-length, y-length);
+        corner2=new Line(x-length,y+length,x-length, y+length);
+        corner3=new Line(x+length,y-length,x+length, y-length);
+        corner4=new Line(x+length,y+length,x+length, x+length);
+        corner1.setStroke(Paint.valueOf("RED"));
+        corner2.setStroke(Paint.valueOf("YELLOW"));
+        corner3.setStroke(Paint.valueOf("BLUE"));
+        corner4.setStroke(Paint.valueOf("GREEN"));
+        corners.add(corner1);
+        corners.add(corner2);
+        corners.add(corner3);
+        corners.add(corner4);
+        lines.add(line1);
+        lines.add(line2);
+        lines.add(line3);
+        lines.add(line4);
+        for(int i=0;i<4;i++) {
+            corners.get(i).setStrokeWidth(20);
+            lines.get(i).setStrokeWidth(20);
+            corners.get(i).setRotate(degree+45);
+        }
         double v1=Math.toRadians((degree));
-        corner1.setRotate(degree+45);
-        corner2.setRotate(degree+45);
-        corner3.setRotate(degree+45);
-        corner4.setRotate(degree+45);
-        double p=length+10;
         diag1.setStartX(x+p*Math.cos(v1));
         diag1.setStartY(y+p*Math.sin(v1));
         diag1.setEndX(x+p*Math.cos(v1+pi));
