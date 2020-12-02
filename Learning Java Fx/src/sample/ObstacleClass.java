@@ -11,12 +11,14 @@ import java.util.ArrayList;
 public abstract class ObstacleClass implements Serializable {
     transient protected Timeline timeline;
     transient protected PlayerClass player;
-    public ObstacleClass(PlayerClass player){
+    transient protected GameClass game;
+    public ObstacleClass(PlayerClass player, GameClass game){
         this.player=player;
+        this.game=game;
         //just for calling super
     }
     public abstract void move_obstacle(ActionEvent event);  // to rotate or move the obstacle as necessary
-    public abstract void detect_collision(PlayerClass player); //takes in the player as parameter - dependency
+    public abstract void detect_collision(ActionEvent event); //takes in the player as parameter - dependency
     public abstract void remove_obstacle(Pane pane); // to stop all the timelines and clear all the data of the obstacle for better latency
     public abstract void start_moving();
     public abstract void add_obstacle(Pane pane);

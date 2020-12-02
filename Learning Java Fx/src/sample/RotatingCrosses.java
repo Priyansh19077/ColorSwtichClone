@@ -21,7 +21,7 @@ public class RotatingCrosses extends ObstacleClass{
     private double x, y, length;
     private double degree=0;
     public RotatingCrosses(double x, double y, double length, PlayerClass player){
-        super(player);
+        super(player, player.getGame());
         timeline = new Timeline(new KeyFrame(Duration.millis(13), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.x=x;
@@ -147,13 +147,14 @@ public class RotatingCrosses extends ObstacleClass{
     }
 
     @Override
-    public void detect_collision(PlayerClass player) {
+    public void detect_collision(ActionEvent event) {
 
     }
 
     @Override
     public void remove_obstacle(Pane pane) {
         pane.getChildren().removeAll(line1, line2, line3, line4, line5, line6, line7, line8);
+        timeline.stop();
     }
 
     @Override

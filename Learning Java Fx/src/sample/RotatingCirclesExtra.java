@@ -19,16 +19,16 @@ public class RotatingCirclesExtra extends ObstacleClass{
     transient private Arc a5,a6, a7, a8;
     transient private Arc a9,a10, a11, a12;
     public RotatingCirclesExtra(double x, double y, double length, PlayerClass player){
-        super(player);
+        super(player, player.getGame());
         timeline = new Timeline(new KeyFrame(Duration.millis(15), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.x=x;
         this.y=y;
         this.length=length;
-        a1 = new Arc(x, y, length/2, length/2, 0, 90);
-        a2 = new Arc(x, y, length/2, length/2, 0, 90);
-        a3 = new Arc(x, y, length/2, length/2, 0, 90);
-        a4 = new Arc(x, y, length/2, length/2, 0, 90);
+        a1 = new Arc(x, y, length/2, length/2, 0, 83);
+        a2 = new Arc(x, y, length/2, length/2, 0, 83);
+        a3 = new Arc(x, y, length/2, length/2, 0, 83);
+        a4 = new Arc(x, y, length/2, length/2, 0, 83);
         a1.setStartAngle(degree);
         a2.setStartAngle((degree+90)%360);
         a3.setStartAngle((degree+180)%360);
@@ -50,10 +50,10 @@ public class RotatingCirclesExtra extends ObstacleClass{
         a4.setStroke(Paint.valueOf("YELLOW"));
         a4.setStrokeWidth(10);
 
-        a5 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
-        a6 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
-        a7 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
-        a8 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
+        a5 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
+        a6 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
+        a7 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
+        a8 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
         a5.setStartAngle(-(degree)%360);
         a6.setStartAngle(-(degree+90)%360);
         a7.setStartAngle(-(degree+180)%360);
@@ -75,10 +75,10 @@ public class RotatingCirclesExtra extends ObstacleClass{
         a8.setStroke(Paint.valueOf("RED"));
         a8.setStrokeWidth(10);
 
-        a9 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
-        a10 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
-        a11 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
-        a12 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
+        a9 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
+        a10 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
+        a11 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
+        a12 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
 
         a9.setStartAngle(-(degree)%360);
         a10.setStartAngle(-(degree+90)%360);
@@ -150,7 +150,7 @@ public class RotatingCirclesExtra extends ObstacleClass{
     }
 
     @Override
-    public void detect_collision(PlayerClass player) {
+    public void detect_collision(ActionEvent event) {
 
     }
     @Override
@@ -161,6 +161,7 @@ public class RotatingCirclesExtra extends ObstacleClass{
     @Override
     public void remove_obstacle(Pane pane) {
         pane.getChildren().removeAll(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12);
+        timeline.stop();
     }
 
 
@@ -188,10 +189,10 @@ public class RotatingCirclesExtra extends ObstacleClass{
         this.player=player;
         timeline = new Timeline(new KeyFrame(Duration.millis(15), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
-        a1 = new Arc(x, y, length/2, length/2, 0, 90);
-        a2 = new Arc(x, y, length/2, length/2, 0, 90);
-        a3 = new Arc(x, y, length/2, length/2, 0, 90);
-        a4 = new Arc(x, y, length/2, length/2, 0, 90);
+        a1 = new Arc(x, y, length/2, length/2, 0, 83);
+        a2 = new Arc(x, y, length/2, length/2, 0, 83);
+        a3 = new Arc(x, y, length/2, length/2, 0, 83);
+        a4 = new Arc(x, y, length/2, length/2, 0, 83);
         a1.setStartAngle(degree);
         a2.setStartAngle((degree+90)%360);
         a3.setStartAngle((degree+180)%360);
@@ -213,10 +214,10 @@ public class RotatingCirclesExtra extends ObstacleClass{
         a4.setStroke(Paint.valueOf("YELLOW"));
         a4.setStrokeWidth(10);
 
-        a5 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
-        a6 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
-        a7 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
-        a8 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 90);
+        a5 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
+        a6 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
+        a7 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
+        a8 = new Arc(x, y, (length-30)/2, (length-30)/2, 0, 82);
         a5.setStartAngle(-(degree)%360);
         a6.setStartAngle(-(degree+90)%360);
         a7.setStartAngle(-(degree+180)%360);
@@ -238,10 +239,10 @@ public class RotatingCirclesExtra extends ObstacleClass{
         a8.setStroke(Paint.valueOf("RED"));
         a8.setStrokeWidth(10);
 
-        a9 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
-        a10 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
-        a11 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
-        a12 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 90);
+        a9 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
+        a10 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
+        a11 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
+        a12 = new Arc(x, y, (length+30)/2, (length+30)/2, 0, 84);
 
         a9.setStartAngle(-(degree)%360);
         a10.setStartAngle(-(degree+90)%360);

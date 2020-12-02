@@ -64,9 +64,6 @@ public class PlayerClass implements Serializable {
                 game.constant_score1.setLayoutY(y-330+40);
                 game.constant_stars1.setLayoutY(y-330+40);
                 game.y_value=(y-330+460);
-
-
-
             }
         }
 //        System.out.println(y);

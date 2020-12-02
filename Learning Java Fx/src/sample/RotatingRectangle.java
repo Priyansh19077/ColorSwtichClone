@@ -18,7 +18,7 @@ public class RotatingRectangle extends ObstacleClass{
     private double x, y, length;
     private double degree=0;
     public RotatingRectangle(double x, double y, double length, PlayerClass player){
-        super(player);
+        super(player, player.getGame());
         timeline = new Timeline(new KeyFrame(Duration.millis(12), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         this.x=x;
@@ -104,13 +104,14 @@ public class RotatingRectangle extends ObstacleClass{
     }
 
     @Override
-    public void detect_collision(PlayerClass player) {
+    public void detect_collision(ActionEvent event) {
 
     }
 
     @Override
     public void remove_obstacle(Pane pane) {
         pane.getChildren().removeAll(line1, line2, line3, line4, corner1, corner2, corner3, corner4);
+        timeline.stop();
     }
 
 

@@ -15,7 +15,7 @@ public class HorizontalLine extends ObstacleClass{
     private double x_changes2;
     transient Line v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16;
     public HorizontalLine(double y4, PlayerClass player){
-        super(player);
+        super(player, player.getGame());
         this.y=y4+15;
         this.y1=-135;
         this.x_changes1=0;
@@ -176,7 +176,7 @@ public class HorizontalLine extends ObstacleClass{
     }
 
     @Override
-    public void detect_collision(PlayerClass player) {
+    public void detect_collision(ActionEvent event) {
 
     }
 
@@ -187,7 +187,8 @@ public class HorizontalLine extends ObstacleClass{
 
         @Override
     public void remove_obstacle(Pane pane) {
-            pane.getChildren().removeAll(v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16);
+        pane.getChildren().removeAll(v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15,v16);
+        timeline.stop();
     }
 
 

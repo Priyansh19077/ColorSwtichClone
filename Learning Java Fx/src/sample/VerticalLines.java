@@ -21,7 +21,7 @@ public class VerticalLines extends ObstacleClass{
     private double x_changes2;
     transient private Line v1,v2,v3,v4,v5,v6,v7,v8;
     public VerticalLines(double y, PlayerClass player){
-        super(player);
+        super(player, player.getGame());
         this.y=y;
         this.f=0;
         this.x_changes1=0;
@@ -118,7 +118,7 @@ public class VerticalLines extends ObstacleClass{
     }
 
     @Override
-    public void detect_collision(PlayerClass player) {
+    public void detect_collision(ActionEvent event) {
 
     }
 
@@ -130,6 +130,7 @@ public class VerticalLines extends ObstacleClass{
         @Override
     public void remove_obstacle(Pane pane) {
         pane.getChildren().removeAll(v1,v2,v3,v4,v5,v6,v7,v8);
+        timeline.stop();
     }
 
 

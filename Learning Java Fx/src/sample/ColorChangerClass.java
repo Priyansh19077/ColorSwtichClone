@@ -77,6 +77,7 @@ public class ColorChangerClass implements Serializable {
     }
     public void removeColorChanger(Pane pane){
         pane.getChildren().removeAll(a1, a2, a3, a4);
+        t1.stop();
     }
     public double getX(){
         return this.x;
