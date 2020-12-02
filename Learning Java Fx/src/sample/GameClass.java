@@ -234,19 +234,19 @@ public class GameClass implements Serializable {
             s1.removeStar(pane);
             Random rand=new Random();
             int p=rand.nextInt(available_obs.size());
-            if(available_obs.get(p).getClass()==new RotatingCircle(0, 0, 0, player).getClass()) {
-                obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
-            }else if(available_obs.get(p).getClass()==new RotatingRectangle(0, 0, 0, player).getClass()){
-                obstacles.add(new RotatingRectangle(250, 150-number_of_obstacles*400, 100, player));
-            }else if(available_obs.get(p).getClass()==new RotatingCrosses(0, 0, 0, player).getClass()){
-                obstacles.add(new RotatingCrosses(250, 150-number_of_obstacles*400, 90, player));
-            }else if(available_obs.get(p).getClass()==new RotatingCirclesExtra(0, 0, 0, 3, player).getClass()){
-                obstacles.add(new RotatingCirclesExtra(250, 150-number_of_obstacles*400, 200, 3, player));
-                System.out.println(1000);
-            }else if(available_obs.get(p).getClass()==new VerticalLines(0, player).getClass())
-                obstacles.add(new VerticalLines(150-number_of_obstacles*400-40, player));
-            else if(available_obs.get(p).getClass()==new HorizontalLine(0, player).getClass())
-                obstacles.add(new HorizontalLine(150-number_of_obstacles*400+40, player));
+                if (available_obs.get(p).getClass() == new RotatingCircle(0, 0, 0, player).getClass()) {
+                    obstacles.add(new RotatingCircle(250, 150 - number_of_obstacles * 400, 200, player));
+                } else if (available_obs.get(p).getClass() == new RotatingRectangle(0, 0, 0, player).getClass()) {
+                    obstacles.add(new RotatingRectangle(250, 150 - number_of_obstacles * 400, 100, player));
+                } else if (available_obs.get(p).getClass() == new RotatingCrosses(0, 0, 0, player).getClass()) {
+                    obstacles.add(new RotatingCrosses(250, 150 - number_of_obstacles * 400, 90, player));
+                } else if (available_obs.get(p).getClass() == new RotatingCirclesExtra(0, 0, 0, 3, player).getClass()) {
+                    obstacles.add(new RotatingCirclesExtra(250, 150 - number_of_obstacles * 400, 200, 3, player));
+                    System.out.println(1000);
+                } else if (available_obs.get(p).getClass() == new VerticalLines(0, player).getClass())
+                    obstacles.add(new VerticalLines(150 - number_of_obstacles * 400 - 40, player));
+                else if (available_obs.get(p).getClass() == new HorizontalLine(0, player).getClass())
+                    obstacles.add(new HorizontalLine(150 - number_of_obstacles * 400 + 40, player));
             obstacles.get(obstacles.size()-1).add_obstacle(pane);
             stars.add(new StarClass(210, 150 - number_of_obstacles * 400 - 40, 10, player, pane, 60));
             colorChangers.add(new ColorChangerClass(250, 150-number_of_obstacles*400-200, player, pane));
