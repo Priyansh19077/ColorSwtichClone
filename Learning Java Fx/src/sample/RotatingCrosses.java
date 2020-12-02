@@ -7,7 +7,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
+
+import java.security.Key;
+import java.util.ArrayList;
 
 public class RotatingCrosses extends ObstacleClass{
     transient private Line line1, line2, line3, line4;
@@ -18,12 +22,16 @@ public class RotatingCrosses extends ObstacleClass{
     transient private Line line5,line6,line7,line8;
     transient private Circle c2;
     transient private Circle c3;
+    transient private ArrayList<Line> lines;
+    transient private Timeline collision;
     private double x, y, length;
     private double degree=0;
     public RotatingCrosses(double x, double y, double length, PlayerClass player){
         super(player, player.getGame());
         timeline = new Timeline(new KeyFrame(Duration.millis(13), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
+        collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
+        collision.setCycleCount(-1);
         this.x=x;
         this.y=y;
         this.length=length;
@@ -77,18 +85,21 @@ public class RotatingCrosses extends ObstacleClass{
         line2.setStroke(Paint.valueOf("BLUE"));
         line3.setStroke(Paint.valueOf("GREEN"));
         line4.setStroke(Paint.valueOf("YELLOW"));
-        line1.setStrokeWidth(20);
-        line2.setStrokeWidth(20);
-        line3.setStrokeWidth(20);
-        line4.setStrokeWidth(20);
         line5.setStroke(Paint.valueOf("GREEN"));
         line6.setStroke(Paint.valueOf("BLUE"));
         line7.setStroke(Paint.valueOf("RED"));
         line8.setStroke(Paint.valueOf("YELLOW"));
-        line5.setStrokeWidth(20);
-        line6.setStrokeWidth(20);
-        line7.setStrokeWidth(20);
-        line8.setStrokeWidth(20);
+        lines=new ArrayList<Line>();
+        lines.add(line1);
+        lines.add(line2);
+        lines.add(line3);
+        lines.add(line4);
+        lines.add(line5);
+        lines.add(line6);
+        lines.add(line7);
+        lines.add(line8);
+        for(int i=0;i<8;i++)
+            lines.get(i).setStrokeWidth(20);
         move_obstacle(new ActionEvent());
     }
 
@@ -148,13 +159,25 @@ public class RotatingCrosses extends ObstacleClass{
 
     @Override
     public void detect_collision(ActionEvent event) {
-
+        Circle ball=player.getBall();
+        for(int i=0;i<8;i++){
+            Shape intersection=Shape.intersect(ball, lines.get(i));
+            if(intersection.getBoundsInLocal().getWidth()!=-1 && lines.get(i).getStroke()!=ball.getFill()){
+                System.out.println("Game over!! Collision Detected");
+                timeline.pause();
+                collision.pause();
+                player.stopMoving();
+                game.endGame();
+                break;
+            }
+        }
     }
 
     @Override
     public void remove_obstacle(Pane pane) {
-        pane.getChildren().removeAll(line1, line2, line3, line4, line5, line6, line7, line8);
+        pane.getChildren().removeAll(line1, line2, line3, line4, line5, line6, line7, line8, c2, c3);
         timeline.stop();
+        collision.stop();
     }
 
     @Override
@@ -166,6 +189,7 @@ public class RotatingCrosses extends ObstacleClass{
 
     public void start_moving(){
         timeline.play();
+        collision.play();
     }
 
     private void change_coordintate(double a, double b, double c, double d, Line n1){
@@ -184,6 +208,7 @@ public class RotatingCrosses extends ObstacleClass{
     @Override
     public void stopMoving() {
         timeline.pause();
+        collision.pause();
     }
     @Override
     public double getY(){
@@ -191,8 +216,11 @@ public class RotatingCrosses extends ObstacleClass{
     }
     public void initialize(ObstacleClass o, PlayerClass player){
         this.player=player;
+        this.game=player.getGame();
         timeline = new Timeline(new KeyFrame(Duration.millis(18), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
+        collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
+        collision.setCycleCount(-1);
         c2=new Circle();
         c2.setCenterY(y);
         c2.setCenterX(x-length+10);
@@ -243,19 +271,21 @@ public class RotatingCrosses extends ObstacleClass{
         line2.setStroke(Paint.valueOf("BLUE"));
         line3.setStroke(Paint.valueOf("GREEN"));
         line4.setStroke(Paint.valueOf("YELLOW"));
-        line1.setStrokeWidth(20);
-        line2.setStrokeWidth(20);
-        line3.setStrokeWidth(20);
-        line4.setStrokeWidth(20);
         line5.setStroke(Paint.valueOf("GREEN"));
         line6.setStroke(Paint.valueOf("BLUE"));
         line7.setStroke(Paint.valueOf("RED"));
         line8.setStroke(Paint.valueOf("YELLOW"));
-        line5.setStrokeWidth(20);
-        line6.setStrokeWidth(20);
-        line7.setStrokeWidth(20);
-        line8.setStrokeWidth(20);
+        lines=new ArrayList<Line>();
+        lines.add(line1);
+        lines.add(line2);
+        lines.add(line3);
+        lines.add(line4);
+        lines.add(line5);
+        lines.add(line6);
+        lines.add(line7);
+        lines.add(line8);
+        for(int i=0;i<8;i++)
+            lines.get(i).setStrokeWidth(20);
         move_obstacle(new ActionEvent());
-        return;
     }
 }

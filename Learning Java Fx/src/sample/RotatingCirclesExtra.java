@@ -110,6 +110,7 @@ public class RotatingCirclesExtra extends ObstacleClass{
                 collision.pause();
                 player.stopMoving();
                 game.endGame();
+                break;
             }
         }
     }

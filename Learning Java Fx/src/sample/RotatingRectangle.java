@@ -130,6 +130,7 @@ public class RotatingRectangle extends ObstacleClass{
                 collision.pause();
                 player.stopMoving();
                 game.endGame();
+                break;
             }
         }
         if(number>0)
@@ -142,6 +143,7 @@ public class RotatingRectangle extends ObstacleClass{
                 collision.pause();
                 player.stopMoving();
                 game.endGame();
+                break;
             }
         }
     }

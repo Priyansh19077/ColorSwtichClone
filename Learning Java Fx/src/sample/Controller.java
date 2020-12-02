@@ -350,23 +350,22 @@ public class Controller{
             @Override
             public void handle(ActionEvent event) {
                 currentGame=null;
-                display_main_menu();
                 timeline.stop();
+                display_main_menu();
             }
         });
         continue_game.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                continue_game(currentGame);
                 timeline.stop();
-                timeline.setCycleCount(0);
+                continue_game(currentGame);
             }
         });
         new_game.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                new_game();
                 timeline.stop();
+                new_game();
             }
         });
         a1.lengthProperty().addListener(new ChangeListener<Number>() {
@@ -377,7 +376,6 @@ public class Controller{
                     timeline.stop();
                     a1.setVisible(false);
                     continue_label.setVisible(false);
-                    timeline.setCycleCount(0);
                     Timeline t1=new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
