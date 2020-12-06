@@ -153,6 +153,7 @@ public class HorizontalLine extends ObstacleClass{
 
     @Override
     public void detect_collision(ActionEvent event) {
+        this.check_crossed();
         Circle ball=player.getBall();
         for(int i=0;i<16;i++){
             Shape intersection=Shape.intersect(ball, lines.get(i));
@@ -162,9 +163,9 @@ public class HorizontalLine extends ObstacleClass{
                     start_x_values.set(j, lines.get(j).getStartX());
                     end_x_values.set(j, lines.get(j).getEndX());
                 }
+                player.stopMoving();
                 timeline.pause();
                 collision.pause();
-                player.stopMoving();
                 game.endGame();
             }
         }
@@ -175,7 +176,18 @@ public class HorizontalLine extends ObstacleClass{
         return this.y;
     }
 
-        @Override
+    @Override
+    public void check_crossed() {
+        if(player.getBall().getCenterY()<y+y1){
+            if(!left_behind){
+                left_behind=true;
+                System.out.println("Horizontal line crossed");
+                game.addObstaclesCrossed();
+            }
+        }
+    }
+
+    @Override
     public void remove_obstacle(Pane pane) {
         for(int i=0;i<16;i++)
             pane.getChildren().remove(lines.get(i));

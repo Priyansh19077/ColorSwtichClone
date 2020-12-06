@@ -159,14 +159,15 @@ public class RotatingCrosses extends ObstacleClass{
 
     @Override
     public void detect_collision(ActionEvent event) {
+        this.check_crossed();
         Circle ball=player.getBall();
         for(int i=0;i<8;i++){
             Shape intersection=Shape.intersect(ball, lines.get(i));
             if(intersection.getBoundsInLocal().getWidth()!=-1 && lines.get(i).getStroke()!=ball.getFill()){
                 System.out.println("Game over!! Collision Detected");
+                player.stopMoving();
                 timeline.pause();
                 collision.pause();
-                player.stopMoving();
                 game.endGame();
                 break;
             }
@@ -214,6 +215,18 @@ public class RotatingCrosses extends ObstacleClass{
     public double getY(){
         return this.y;
     }
+
+    @Override
+    public void check_crossed() {
+        if(player.getBall().getCenterY()<y-length-10){
+            if(!left_behind){
+                System.out.println("Rotating Crosses crossed");
+                left_behind=true;
+                game.addObstaclesCrossed();
+            }
+        }
+    }
+
     public void initialize(ObstacleClass o, PlayerClass player){
         this.player=player;
         this.game=player.getGame();

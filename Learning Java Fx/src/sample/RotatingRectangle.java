@@ -117,6 +117,7 @@ public class RotatingRectangle extends ObstacleClass{
 
     @Override
     public void detect_collision(ActionEvent event) {
+        this.check_crossed();
         Circle ball=player.getBall();
         int number=0;
         for(int i=0;i<4;i++){
@@ -139,9 +140,9 @@ public class RotatingRectangle extends ObstacleClass{
             Shape intersection=Shape.intersect(ball, lines.get(i));
             if(lines.get(i).getStroke()!=ball.getFill() && intersection.getBoundsInLocal().getWidth()!=-1){
                 System.out.println("Game over !! Collision");
+                player.stopMoving();
                 timeline.pause();
                 collision.pause();
-                player.stopMoving();
                 game.endGame();
                 break;
             }
@@ -186,6 +187,18 @@ public class RotatingRectangle extends ObstacleClass{
     public double getY(){
         return this.y;
     }
+
+    @Override
+    public void check_crossed() {
+        if(player.getBall().getCenterY()<y-length){
+            if(!left_behind){
+                System.out.println("Rotating Rectangle crossed");
+                left_behind=true;
+                game.addObstaclesCrossed();
+            }
+        }
+    }
+
     @Override
     public void initialize(ObstacleClass obs, PlayerClass player){
         this.player=player;

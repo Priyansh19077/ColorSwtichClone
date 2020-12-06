@@ -57,7 +57,7 @@ public class GameClass implements Serializable {
         this.time=1;
         this.times=new ArrayList<Double>();
         for(int i=0;i<21;i++){
-            times.add(1-i*(0.05/2));
+            times.add(1-i*(0.04/2));
         }
         this.level=1;
         System.out.println(pane.getLayoutY());
@@ -230,7 +230,7 @@ public class GameClass implements Serializable {
         return this.player;
     }
     public void update_UI(ActionEvent event){
-        level=number_of_obstacles_crossed/3+1;
+        level=(number_of_obstacles_crossed/3)+1;
         this.time=times.get(Math.min(number_of_obstacles/3, 20));
         ObstacleClass obs1=obstacles.get(0);
         if(player.getBall().getCenterY()-obs1.getY()<=-500){
@@ -432,5 +432,10 @@ public class GameClass implements Serializable {
     }
     public double getTime(){
         return this.time;
+    }
+    public void addObstaclesCrossed(){
+        this.number_of_obstacles_crossed++;
+        System.out.println(number_of_obstacles_crossed);
+        System.out.println(level);
     }
 }

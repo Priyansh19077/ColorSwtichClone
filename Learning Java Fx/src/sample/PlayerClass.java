@@ -85,9 +85,11 @@ public class PlayerClass implements Serializable {
         return ball;
     }
     public void stopMoving(){
-        for(Timeline i:timelines){
-            i.pause();
-        }
+        timelines.get(1).pause();
+        timelines.get(0).pause();
+        timelines.get(1).pause();
+        timelines.get(0).pause();
+        timelines.get(0).pause();
     }
     public void addScore(int a){
         this.score+=a;

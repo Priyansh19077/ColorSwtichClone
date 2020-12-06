@@ -12,6 +12,7 @@ public abstract class ObstacleClass implements Serializable {
     transient protected Timeline timeline;
     transient protected PlayerClass player;
     transient protected GameClass game;
+    protected boolean left_behind=false;
     public ObstacleClass(PlayerClass player, GameClass game){
         this.player=player;
         this.game=game;
@@ -25,5 +26,6 @@ public abstract class ObstacleClass implements Serializable {
     public abstract void moveDown(double a);
     public abstract void stopMoving();
     public abstract double getY();
+    public abstract void check_crossed();
     public abstract void initialize(ObstacleClass obs, PlayerClass player);
 }

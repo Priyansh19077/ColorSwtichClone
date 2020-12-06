@@ -111,14 +111,15 @@ public class VerticalLines extends ObstacleClass{
 
     @Override
     public void detect_collision(ActionEvent event) {
+        this.check_crossed();
         Circle ball=player.getBall();
         for(int i=0;i<8;i++){
             Shape intersection=Shape.intersect(ball, lines.get(i));
             if(intersection.getBoundsInLocal().getWidth()!=-1 && lines.get(i).getStroke()!=ball.getFill()){
                 System.out.println("Game over!! Collision Detected");
+                player.stopMoving();
                 timeline.pause();
                 collision.pause();
-                player.stopMoving();
                 game.endGame();
                 break;
             }
@@ -130,7 +131,19 @@ public class VerticalLines extends ObstacleClass{
         return this.y;
     }
 
-        @Override
+    @Override
+    public void check_crossed() {
+        if(player.getBall().getCenterY()<y-10){
+            if(!left_behind){
+                left_behind=true;
+                System.out.println("Vertical Lines crossed");
+                game.addObstaclesCrossed();
+
+            }
+        }
+    }
+
+    @Override
     public void remove_obstacle(Pane pane) {
         for(int i=0;i<8;i++)
             pane.getChildren().remove(lines.get(i));

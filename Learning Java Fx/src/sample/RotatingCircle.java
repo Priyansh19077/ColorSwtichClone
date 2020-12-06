@@ -55,14 +55,15 @@ public class RotatingCircle extends ObstacleClass{
 
     @Override
     public void detect_collision(ActionEvent event) {
+        this.check_crossed();
         Circle ball=player.getBall();
         for(int i=0;i<4;i++){
             Shape shape= Shape.intersect(ball, arcs.get(i));
             if(shape.getBoundsInLocal().getWidth()!=-1 && arcs.get(i).getStroke()!=ball.getFill()){
                 System.out.println("Game over!! Collision Detected");
+                player.stopMoving();
                 timeline.pause();
                 collision.pause();
-                player.stopMoving();
                 game.endGame();
                 break;
             }
@@ -71,6 +72,17 @@ public class RotatingCircle extends ObstacleClass{
     @Override
     public double getY(){
         return this.y;
+    }
+
+    @Override
+    public void check_crossed() {
+        if(player.getBall().getCenterY()<y-length/2){
+            if(!left_behind){
+                left_behind=true;
+                System.out.println("Rotating Circle crossed");
+                game.addObstaclesCrossed();
+            }
+        }
     }
 
     @Override
