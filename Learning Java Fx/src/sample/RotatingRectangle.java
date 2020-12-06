@@ -29,7 +29,7 @@ public class RotatingRectangle extends ObstacleClass{
     private double p;
     public RotatingRectangle(double x, double y, double length, PlayerClass player){
         super(player, player.getGame());
-        timeline = new Timeline(new KeyFrame(Duration.millis(12), this::move_obstacle));
+        timeline = new Timeline(new KeyFrame(Duration.millis(game.getTime()*12), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
         collision.setCycleCount(-1);
@@ -190,7 +190,7 @@ public class RotatingRectangle extends ObstacleClass{
     public void initialize(ObstacleClass obs, PlayerClass player){
         this.player=player;
         this.game=player.getGame();
-        timeline = new Timeline(new KeyFrame(Duration.millis(12), this::move_obstacle));
+        timeline = new Timeline(new KeyFrame(Duration.millis(game.getTime()*12), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
         collision.setCycleCount(-1);

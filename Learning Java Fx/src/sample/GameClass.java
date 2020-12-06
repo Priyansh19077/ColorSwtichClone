@@ -43,7 +43,7 @@ public class GameClass implements Serializable {
     transient public Button constant_score1;
     transient public Button constant_stars1;
     transient private Controller controller;
-    private boolean gameEnded;
+    private double time;
     public double y_value=460;
     public int stars_remaining;
     public int required_stars=3;
@@ -51,6 +51,7 @@ public class GameClass implements Serializable {
     public GameClass(Pane pane, Controller controller, Scene scene){
         this.controller=controller;
         this.pane=pane;
+        this.time=1;
         System.out.println(pane.getLayoutY());
         this.scene=scene;
         this.timeline=new Timeline(new KeyFrame(Duration.millis(10), this::update_UI));
@@ -131,7 +132,6 @@ public class GameClass implements Serializable {
         constant_stars1.setMinHeight(35);
         constant_score1.setDisable(true);
         constant_stars1.setDisable(true);
-//        constant_star=new StarClass(400, 30, 0, player, pane, 40);
     }
     public void startGame()
     {
@@ -420,5 +420,8 @@ public class GameClass implements Serializable {
                 controller.display_end_game_menu();
             }
         });
+    }
+    public double getTime(){
+        return this.time;
     }
 }

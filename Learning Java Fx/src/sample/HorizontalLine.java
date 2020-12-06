@@ -26,7 +26,7 @@ public class HorizontalLine extends ObstacleClass{
         super(player, player.getGame());
         this.y=y4+25;
         this.y1=-145;
-        timeline=new Timeline(new KeyFrame(Duration.millis(5),this::move_obstacle));
+        timeline=new Timeline(new KeyFrame(Duration.millis(game.getTime()*5),this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
         collision.setCycleCount(-1);
@@ -210,7 +210,7 @@ public class HorizontalLine extends ObstacleClass{
     public void initialize(ObstacleClass obs, PlayerClass player){
         this.player=player;
         this.game=player.getGame();
-        timeline=new Timeline(new KeyFrame(Duration.millis(5),this::move_obstacle));
+        timeline=new Timeline(new KeyFrame(Duration.millis(game.getTime()*5),this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
         collision.setCycleCount(-1);

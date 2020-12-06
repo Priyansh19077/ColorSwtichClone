@@ -28,7 +28,7 @@ public class VerticalLines extends ObstacleClass{
         this.f=0;
         this.x_changes1=0;
         this.x_changes2=0;
-        timeline=new Timeline(new KeyFrame(Duration.millis(16), this::move_obstacle));
+        timeline=new Timeline(new KeyFrame(Duration.millis(game.getTime()*16), this::move_obstacle));
         timeline.setCycleCount(-1);
         collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
         collision.setCycleCount(-1);
@@ -165,7 +165,7 @@ public class VerticalLines extends ObstacleClass{
     public void initialize(ObstacleClass obs, PlayerClass player){
         this.player=player;
         this.game=player.getGame();
-        timeline=new Timeline(new KeyFrame(Duration.millis(20), this::move_obstacle));
+        timeline=new Timeline(new KeyFrame(Duration.millis(game.getTime()*16), this::move_obstacle));
         timeline.setCycleCount(-1);
         collision=new Timeline(new KeyFrame(Duration.millis(50), this::detect_collision));
         collision.setCycleCount(-1);

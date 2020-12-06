@@ -23,7 +23,7 @@ public class RotatingCirclesExtra extends ObstacleClass{
     transient private Timeline collision;
     public RotatingCirclesExtra(double x, double y, double length, int n, PlayerClass player){
         super(player, player.getGame());
-        timeline = new Timeline(new KeyFrame(Duration.millis(15), this::move_obstacle));
+        timeline = new Timeline(new KeyFrame(Duration.millis(game.getTime()*15), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         collision=new Timeline(new KeyFrame(Duration.millis(50),this::detect_collision));
         collision.setCycleCount(-1);
@@ -154,7 +154,7 @@ public class RotatingCirclesExtra extends ObstacleClass{
     public void initialize(ObstacleClass obs, PlayerClass player){
         this.player=player;
         this.game=player.getGame();
-        timeline = new Timeline(new KeyFrame(Duration.millis(15), this::move_obstacle));
+        timeline = new Timeline(new KeyFrame(Duration.millis(game.getTime()*15), this::move_obstacle));
         timeline.setCycleCount(Timeline.INDEFINITE);
         collision=new Timeline(new KeyFrame(Duration.millis(50),this::detect_collision));
         collision.setCycleCount(-1);
