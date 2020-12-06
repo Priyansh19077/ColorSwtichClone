@@ -1,37 +1,23 @@
 package sample;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import java.io.File;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.net.URL;
 
-import static javafx.scene.media.AudioClip.INDEFINITE;
 
 public class StarClass implements Serializable{
     private PlayerClass player;
@@ -77,7 +63,6 @@ public class StarClass implements Serializable{
                             AudioInputStream sound=AudioSystem.getAudioInputStream(file);
                             Clip clip=AudioSystem.getClip();
                             clip.open(sound);
-                            clip.flush();
                             clip.start();
                             return null;
                         }
