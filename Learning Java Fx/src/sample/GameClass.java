@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -16,24 +15,22 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.Serializable;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GameClass implements Serializable {
-    private PlayerClass player;
+    private final PlayerClass player;
     transient private Button b1;
     transient private Button pause;
     private double shiftedX;
     private double shiftedY;
     private int number_of_obstacles=0;
-    private ArrayList<ObstacleClass> obstacles;
-    private ArrayList<StarClass> stars;
-    private ArrayList<ColorChangerClass> colorChangers;
+    private final ArrayList<ObstacleClass> obstacles;
+    private final ArrayList<StarClass> stars;
+    private final ArrayList<ColorChangerClass> colorChangers;
     private ArrayList<ObstacleClass> available_obs;
     private double absY;
     transient private Button timerLabel;
@@ -46,7 +43,7 @@ public class GameClass implements Serializable {
     private double time;
     private int level;
     private int number_of_obstacles_crossed=0;
-    private ArrayList<Double> times;
+    private final ArrayList<Double> times;
     public double y_value=460;
     public int stars_remaining;
     public int required_stars=3;
@@ -55,7 +52,7 @@ public class GameClass implements Serializable {
         this.controller=controller;
         this.pane=pane;
         this.time=1;
-        this.times=new ArrayList<Double>();
+        this.times=new ArrayList<>();
         for(int i=0;i<21;i++){
             times.add(1-i*(0.04/2));
         }
@@ -65,28 +62,25 @@ public class GameClass implements Serializable {
         this.timeline=new Timeline(new KeyFrame(Duration.millis(10), this::update_UI));
         timeline.setCycleCount(-1);
         stars_remaining=0;
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.P) {
-                    pauseGame();
-                }
-                if(event.getCode()==KeyCode.G) {
-                    endGame();
-                }
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.P) {
+                pauseGame();
+            }
+            if(event.getCode()==KeyCode.G) {
+                endGame();
             }
         });
-        this.obstacles=new ArrayList<ObstacleClass>();
-        this.stars=new ArrayList<StarClass>();
-        this.colors=new ArrayList<Color>();
-        this.colorChangers=new ArrayList<ColorChangerClass>();
+        this.obstacles=new ArrayList<>();
+        this.stars=new ArrayList<>();
+        this.colors=new ArrayList<>();
+        this.colorChangers=new ArrayList<>();
         this.b1=new Button();
         this.pause=new Button("Pause");
         b1.setLayoutY(1000);
         b1.setLayoutY(1000);
         pause.setLayoutX(0);
         pause.setLayoutY(0);
-        b1.setOnAction(new EventHandler<ActionEvent>() {
+        b1.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent event) {
                 player.moveDown();
@@ -97,7 +91,7 @@ public class GameClass implements Serializable {
         colors.add((Color) Paint.valueOf("RED"));
         colors.add((Color) Paint.valueOf("YELLOW"));
         this.player=new PlayerClass((new Random()).nextInt(4), colors, this.pane, this);
-        available_obs=new ArrayList<ObstacleClass>();
+        available_obs=new ArrayList<>();
         available_obs.add(new RotatingCircle(250, 150, 80, player));
         available_obs.add(new RotatingRectangle(250, 150, 80, player));
         available_obs.add(new RotatingCrosses(250, 250, 80, player));
@@ -107,17 +101,17 @@ public class GameClass implements Serializable {
         Random rand=new Random();
         for(int i=0;i<3;i++){
             int p=rand.nextInt(available_obs.size());
-            if(available_obs.get(p).getClass()==new RotatingCircle(0, 0, 0, player).getClass()) {
+            if(available_obs.get(p).getClass()== RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
-            }else if(available_obs.get(p).getClass()==new RotatingRectangle(0, 0, 0, player).getClass()){
+            }else if(available_obs.get(p).getClass()== RotatingRectangle.class){
                 obstacles.add(new RotatingRectangle(250, 150-number_of_obstacles*400, 100, player));
-            }else if(available_obs.get(p).getClass()==new RotatingCrosses(0, 0, 0, player).getClass()){
+            }else if(available_obs.get(p).getClass()== RotatingCrosses.class){
                 obstacles.add(new RotatingCrosses(250, 150-number_of_obstacles*400, 90, player));
-            }else if(available_obs.get(p).getClass()==new RotatingCirclesExtra(0, 0, 0, 3, player ).getClass()){
+            }else if(available_obs.get(p).getClass()== RotatingCirclesExtra.class){
                 obstacles.add(new RotatingCirclesExtra(250, 150-number_of_obstacles*400, 200, 3, player));
-            }else if(available_obs.get(p).getClass()==new VerticalLines(0, player).getClass())
+            }else if(available_obs.get(p).getClass()== VerticalLines.class)
                 obstacles.add(new VerticalLines(150-number_of_obstacles*400-40, player));
-            else if(available_obs.get(p).getClass()==new HorizontalLine(0, player).getClass())
+            else if(available_obs.get(p).getClass()== HorizontalLine.class)
                 obstacles.add(new HorizontalLine(150-number_of_obstacles*400+40, player));
             stars.add(new StarClass(210, 150 - number_of_obstacles * 400 - 40, 10, player, pane, 60));
             ColorChangerClass c1=new ColorChangerClass(250, 150-number_of_obstacles*400-200, player, pane);
@@ -154,29 +148,23 @@ public class GameClass implements Serializable {
         timerLabel.setTextFill(Paint.valueOf("FFFB8A"));
         timerLabel.setStyle("-fx-background-color: transparent; -fx-font-size:60;");
         pane.getChildren().addAll(timerLabel);
-        Timeline timeline1=new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                int p=Integer.parseInt(timerLabel.getText().toString());
-                p--;
-                timerLabel.setText(String.valueOf(p));
-            }
+        Timeline timeline1=new Timeline(new KeyFrame(Duration.millis(1000), event -> {
+            int p=Integer.parseInt(timerLabel.getText());
+            p--;
+            timerLabel.setText(String.valueOf(p));
         }));
         timeline1.setCycleCount(3);
         timeline1.playFromStart();
-        timeline1.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                player.startMoving();
-                timerLabel.setVisible(false);
-                for(ObstacleClass i:obstacles){
-                    i.start_moving();
-                }
-                for(StarClass i:stars)
-                    i.startMoving();
-                for(ColorChangerClass i:colorChangers)
-                    i.startMoving();
+        timeline1.setOnFinished(event -> {
+            player.startMoving();
+            timerLabel.setVisible(false);
+            for(ObstacleClass i:obstacles){
+                i.start_moving();
             }
+            for(StarClass i:stars)
+                i.startMoving();
+            for(ColorChangerClass i:colorChangers)
+                i.startMoving();
         });
     }
     public void pauseGame(){ // serialization
@@ -220,9 +208,7 @@ public class GameClass implements Serializable {
     public Pane getPane(){
         return pane;
     }
-    public ArrayList<ObstacleClass> getObstacles(){
-        return obstacles;
-    }
+
     public Scene getScene(){
         return this.scene;
     }
@@ -244,18 +230,18 @@ public class GameClass implements Serializable {
             s1.removeStar(pane);
             Random rand=new Random();
             int p=rand.nextInt(available_obs.size());
-                if (available_obs.get(p).getClass() == new RotatingCircle(0, 0, 0, player).getClass()) {
+                if (available_obs.get(p).getClass() == RotatingCircle.class) {
                     obstacles.add(new RotatingCircle(250, 150 - number_of_obstacles * 400, 200, player));
-                } else if (available_obs.get(p).getClass() == new RotatingRectangle(0, 0, 0, player).getClass()) {
+                } else if (available_obs.get(p).getClass() == RotatingRectangle.class) {
                     obstacles.add(new RotatingRectangle(250, 150 - number_of_obstacles * 400, 100, player));
-                } else if (available_obs.get(p).getClass() == new RotatingCrosses(0, 0, 0, player).getClass()) {
+                } else if (available_obs.get(p).getClass() == RotatingCrosses.class) {
                     obstacles.add(new RotatingCrosses(250, 150 - number_of_obstacles * 400, 90, player));
-                } else if (available_obs.get(p).getClass() == new RotatingCirclesExtra(0, 0, 0, 3, player).getClass()) {
+                } else if (available_obs.get(p).getClass() == RotatingCirclesExtra.class) {
                     obstacles.add(new RotatingCirclesExtra(250, 150 - number_of_obstacles * 400, 200, 3, player));
                     System.out.println(1000);
-                } else if (available_obs.get(p).getClass() == new VerticalLines(0, player).getClass())
+                } else if (available_obs.get(p).getClass() == VerticalLines.class)
                     obstacles.add(new VerticalLines(150 - number_of_obstacles * 400 - 40, player));
-                else if (available_obs.get(p).getClass() == new HorizontalLine(0, player).getClass())
+                else if (available_obs.get(p).getClass() == HorizontalLine.class)
                     obstacles.add(new HorizontalLine(150 - number_of_obstacles * 400 + 40, player));
             obstacles.get(obstacles.size()-1).add_obstacle(pane);
             stars.add(new StarClass(210, 150 - number_of_obstacles * 400 - 40, 10, player, pane, 60));
@@ -274,6 +260,9 @@ public class GameClass implements Serializable {
         dataClass.saveGame(this);
         this.controller.display_main_menu();
     }
+    public ArrayList<ObstacleClass> getObstacles(){
+        return this.obstacles;
+    }
     public ArrayList<StarClass> getStars(){
         return this.stars;
     }
@@ -290,19 +279,14 @@ public class GameClass implements Serializable {
         this.controller=c1;
         this.timeline=new Timeline(new KeyFrame(Duration.millis(10), this::update_UI));
         timeline.setCycleCount(-1);
-        this.colors=new ArrayList<Color>();
+        this.colors=new ArrayList<>();
         this.b1=new Button();
         this.pause=new Button("Pause");
         b1.setLayoutY(1000);
         b1.setLayoutY(1000);
         pause.setLayoutX(0);
         pause.setLayoutY(0);
-        b1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                player.moveDown();
-            }
-        });
+        b1.setOnAction(event -> player.moveDown());
         colors.add((Color) Paint.valueOf("BLUE"));
         colors.add((Color) Paint.valueOf("GREEN"));
         colors.add((Color) Paint.valueOf("RED"));
@@ -329,39 +313,31 @@ public class GameClass implements Serializable {
         constant_stars1.setMinHeight(35);
         constant_score1.setDisable(true);
         constant_stars1.setDisable(true);
-        for(int i=0;i<obstacles.size();i++){
-            ObstacleClass o=obstacles.get(i);
+        for (ObstacleClass o : obstacles) {
             o.initialize(o, player);
         }
-        ArrayList<StarClass> new_star=new ArrayList<StarClass>();
-        for(int i=0;i<stars.size();i++){
-            StarClass o=stars.get(i);
+        ArrayList<StarClass> new_star= new ArrayList<>();
+        for (StarClass o : stars) {
             o.initialize(o, pane, player);
             new_star.add(o);
         }
-//        stars=new_star;
         ArrayList<ColorChangerClass> new_color_changer=new ArrayList<ColorChangerClass>();
-        for(int i=0;i<colorChangers.size();i++){
-            ColorChangerClass o=colorChangers.get(i);
+        for (ColorChangerClass o : colorChangers) {
             o.initialize(o, pane, player);
             new_color_changer.add(o);
         }
-//        colorChangers=new_color_changer;
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.P) {
-                    pauseGame();
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.P) {
+                pauseGame();
+            }
+            if(event.getCode()==KeyCode.G){
+                player.stopMoving();
+                for(ObstacleClass i:obstacles){
+                    i.stopMoving();
                 }
-                if(event.getCode()==KeyCode.G){
-                    player.stopMoving();
-                    for(ObstacleClass i:obstacles){
-                        i.stopMoving();
-                    }
-                    timeline.stop();
-                    timeline.setCycleCount(0);
-                    controller.display_end_game_menu();
-                }
+                timeline.stop();
+                timeline.setCycleCount(0);
+                controller.display_end_game_menu();
             }
         });
         addNodes();
@@ -381,17 +357,17 @@ public class GameClass implements Serializable {
             s12.removeStar(pane);
             Random rand=new Random();
             int p=rand.nextInt(available_obs.size());
-            if(available_obs.get(p).getClass()==new RotatingCircle(0, 0, 0, player).getClass()) {
+            if(available_obs.get(p).getClass()== RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
-            }else if(available_obs.get(p).getClass()==new RotatingRectangle(0, 0, 0, player).getClass()){
+            }else if(available_obs.get(p).getClass()== RotatingRectangle.class){
                 obstacles.add(new RotatingRectangle(250, 150-number_of_obstacles*400, 100, player));
-            }else if(available_obs.get(p).getClass()==new RotatingCrosses(0, 0, 0, player).getClass()){
+            }else if(available_obs.get(p).getClass()== RotatingCrosses.class){
                 obstacles.add(new RotatingCrosses(250, 150-number_of_obstacles*400, 90, player));
-            }else if(available_obs.get(p).getClass()==new RotatingCirclesExtra(0, 0, 0, 3, player).getClass()){
+            }else if(available_obs.get(p).getClass()== RotatingCirclesExtra.class){
                 obstacles.add(new RotatingCirclesExtra(250, 150-number_of_obstacles*400, 200, 3, player));
-            }else if(available_obs.get(p).getClass()==new VerticalLines(0, player).getClass())
+            }else if(available_obs.get(p).getClass()== VerticalLines.class)
                 obstacles.add(new VerticalLines(150-number_of_obstacles*400-40, player));
-            else if(available_obs.get(p).getClass()==new HorizontalLine(0, player).getClass())
+            else if(available_obs.get(p).getClass()== HorizontalLine.class)
                 obstacles.add(new HorizontalLine(150-number_of_obstacles*400+40, player));
             obstacles.get(obstacles.size()-1).add_obstacle(pane);
             stars.add(new StarClass(210, 150 - number_of_obstacles * 400 - 40, 10, player, pane, 60));
@@ -414,20 +390,14 @@ public class GameClass implements Serializable {
             i.stopMoving();
         timeline.stop();
         timeline.setCycleCount(0);
-        Timeline endGameTimeline=new Timeline(new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            }
+        Timeline endGameTimeline=new Timeline(new KeyFrame(Duration.millis(2000), event -> {
         }));
         endGameTimeline.setCycleCount(2);
         b1.setDisable(true);
         endGameTimeline.play();
-        endGameTimeline.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                player.stopMoving();
-                controller.display_end_game_menu();
-            }
+        endGameTimeline.setOnFinished(event -> {
+            player.stopMoving();
+            controller.display_end_game_menu();
         });
     }
     public double getTime(){
