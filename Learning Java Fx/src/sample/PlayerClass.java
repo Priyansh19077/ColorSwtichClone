@@ -1,10 +1,12 @@
 package sample;
 
 import javafx.animation.KeyFrame;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.animation.Timeline;
@@ -16,6 +18,8 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import static javafx.scene.media.AudioClip.INDEFINITE;
 
 public class PlayerClass implements Serializable {
     private double x, y;

@@ -1,8 +1,12 @@
 package sample;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,13 +17,21 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.net.URL;
+
+import static javafx.scene.media.AudioClip.INDEFINITE;
 
 public class StarClass implements Serializable{
     private PlayerClass player;
@@ -58,9 +70,22 @@ public class StarClass implements Serializable{
                     player.getGame().stars_remaining++;
                     hidden=true;
                     removeStar(pane);
+                    Task task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            File file=new File("Media/star_sound.wav");
+                            AudioInputStream sound=AudioSystem.getAudioInputStream(file);
+                            Clip clip=AudioSystem.getClip();
+                            clip.open(sound);
+                            clip.flush();
+                            clip.start();
+                            return null;
+                        }
+                    };
+                    Thread thread = new Thread(task);
+                    thread.start();
                     t1.stop();
                 }
-//                image_view.setLayoutX((image_view.getLayoutX()+1)%620);
                 image_view.setRotate((image_view.getRotate()-1)%360);
             }
         }));
