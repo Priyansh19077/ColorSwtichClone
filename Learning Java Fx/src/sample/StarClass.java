@@ -127,11 +127,23 @@ public class StarClass implements Serializable{
             public void handle(ActionEvent event) {
                 if(Math.abs(player.getBall().getCenterY()-y)<=70){
                     player.getGame().stars_remaining++;
-                    removeStar(pane);
                     hidden=true;
+                    removeStar(pane);
+                    Task task = new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            File file=new File("Media/star_sound.wav");
+                            AudioInputStream sound=AudioSystem.getAudioInputStream(file);
+                            Clip clip=AudioSystem.getClip();
+                            clip.open(sound);
+                            clip.start();
+                            return null;
+                        }
+                    };
+                    Thread thread = new Thread(task);
+                    thread.start();
                     t1.stop();
                 }
-//                image_view.setLayoutX((image_view.getLayoutX()+1)%620);
                 image_view.setRotate((image_view.getRotate()-1)%360);
             }
         }));
