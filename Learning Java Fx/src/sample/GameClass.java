@@ -2,6 +2,7 @@ package sample;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +17,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -32,6 +37,7 @@ public class GameClass implements Serializable {
     private final ArrayList<ColorChangerClass> colorChangers;
     private ArrayList<ObstacleClass> available_obs;
     private double absY;
+    private int number_of_color_changers_crossed;
     transient private Button timerLabel;
     transient private ArrayList<Color> colors;
     transient private Pane pane;
@@ -72,6 +78,7 @@ public class GameClass implements Serializable {
         this.obstacles=new ArrayList<>();
         this.stars=new ArrayList<>();
         this.colors=new ArrayList<>();
+        this.number_of_color_changers_crossed=0;
         this.colorChangers=new ArrayList<>();
         this.b1=new Button();
         this.pause=new Button("Pause");
@@ -215,7 +222,24 @@ public class GameClass implements Serializable {
         return this.player;
     }
     public void update_UI(ActionEvent event){
-        level=(number_of_obstacles_crossed/3)+1;
+        int new_level=(number_of_color_changers_crossed/3)+1;
+        if(new_level>level){
+            Task task = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    File file=new File("Media/level_up.wav");
+                    AudioInputStream sound= AudioSystem.getAudioInputStream(file);
+                    Clip clip=AudioSystem.getClip();
+                    clip.open(sound);
+                    clip.start();
+                    return null;
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
+        }
+        level=new_level;
+        player.setScore(number_of_obstacles_crossed*10);
         this.time=times.get(Math.min(number_of_obstacles/3, 20));
         ObstacleClass obs1=obstacles.get(0);
         if(player.getBall().getCenterY()-obs1.getY()<=-500){
@@ -380,6 +404,19 @@ public class GameClass implements Serializable {
         controller.continue_game(this);
     }
     public void endGame(){
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                File file=new File("Media/game_over.wav");
+                AudioInputStream sound= AudioSystem.getAudioInputStream(file);
+                Clip clip=AudioSystem.getClip();
+                clip.open(sound);
+                clip.start();
+                return null;
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
         player.stopMoving();
         for(ObstacleClass i:obstacles)
             i.stopMoving();
@@ -406,5 +443,8 @@ public class GameClass implements Serializable {
         this.number_of_obstacles_crossed++;
         System.out.println(number_of_obstacles_crossed);
         System.out.println(level);
+    }
+    public void addColorChangersCrossed(){
+        this.number_of_color_changers_crossed++;
     }
 }

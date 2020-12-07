@@ -48,6 +48,7 @@ public class ColorChangerClass implements Serializable {
                     hidden=true;
                     removeColorChanger(pane);
                     t1.stop();
+                    player.getGame().addColorChangersCrossed();
                 }
                 degree = (degree - 7) % 360;
                 a1.setStartAngle(degree);

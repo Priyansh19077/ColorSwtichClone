@@ -95,8 +95,8 @@ public class PlayerClass implements Serializable {
         timelines.get(0).pause();
         timelines.get(0).pause();
     }
-    public void addScore(int a){
-        this.score+=a;
+    public void setScore(int a){
+        this.score=a;
     }
     public int getScore(){
         return this.score;

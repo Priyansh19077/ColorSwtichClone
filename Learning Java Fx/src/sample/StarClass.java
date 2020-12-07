@@ -52,7 +52,6 @@ public class StarClass implements Serializable{
             @Override
             public void handle(ActionEvent event) {
                 if(Math.abs(player.getBall().getCenterY()-y)<=70){
-                    player.addScore(points);
                     player.getGame().stars_remaining++;
                     hidden=true;
                     removeStar(pane);
@@ -75,7 +74,6 @@ public class StarClass implements Serializable{
             }
         }));
         t1.setCycleCount(-1);
-//        t1.play();
     }
 
     public int getPoints() {
@@ -128,7 +126,6 @@ public class StarClass implements Serializable{
             @Override
             public void handle(ActionEvent event) {
                 if(Math.abs(player.getBall().getCenterY()-y)<=70){
-                    player.addScore(points);
                     player.getGame().stars_remaining++;
                     removeStar(pane);
                     hidden=true;
