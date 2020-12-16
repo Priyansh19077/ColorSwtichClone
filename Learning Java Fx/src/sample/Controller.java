@@ -10,26 +10,31 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.DepthTest;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.xml.sax.helpers.AttributesImpl;
 
 import javax.swing.*;
 
@@ -52,6 +57,12 @@ public class Controller{
         Pane pane=new Pane();
         s1=new Scene(pane, 500, 620, Color.BLACK);
         primaryStage.setScene(s1);
+        try{
+        primaryStage.getIcons().add(new Image(new FileInputStream("Media/Icon.png")));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        primaryStage.setTitle("Color Switch Clone");
         Label l1=new Label("<-------MAIN MENU------->");
         l1.setLayoutY(50);
         l1.setLayoutX(66);
@@ -360,6 +371,9 @@ public class Controller{
             public void handle(ActionEvent event) {
                 if(currentGame.stars_remaining<currentGame.required_stars){
                     //give an alert
+                    CustomDialog custom=new CustomDialog("Insufficient Stars", "You need to have atleast "+currentGame.required_stars+" stars to continue", timeline);
+                    custom.openDialog();
+                    timeline.pause();
                     return;
                 }else{
                     timeline.stop();
@@ -419,5 +433,43 @@ public class Controller{
         this.primaryStage.close();
         System.out.println("Closing");
         dataclass.serialize();
+    }
+    private static class CustomDialog extends Stage{
+        String header, content;
+        Timeline timeline;
+        CustomDialog(String header, String content, Timeline timeline){
+            this.header=header;
+            this.timeline=timeline;
+            this.content=content;
+            Pane root=new Pane();
+            initStyle(StageStyle.TRANSPARENT);
+            initModality(Modality.APPLICATION_MODAL);
+            Rectangle bg=new Rectangle(450, 180, Color.WHITESMOKE);
+            bg.setStroke(Color.BLACK);
+            bg.setStrokeWidth(1.5);
+            setScene(new Scene(root, null));
+            Text headerText=new Text(header);
+            headerText.setFont(Font.font(24));
+            Text contentText=new Text(content);
+            contentText.setFont(Font.font(20));
+            VBox box=new VBox(10, headerText,
+                    new Separator(Orientation.HORIZONTAL),
+                    contentText);
+            Button closing=new Button("OK");
+            closing.setMinWidth(30);
+            closing.setMinHeight(30);
+            closing.setTranslateX(bg.getWidth()-50);
+            closing.setTranslateY(bg.getHeight()-50);
+            box.setPadding(new Insets(15));
+            closing.setOnAction(event -> closeDialog());
+            root.getChildren().addAll(bg, box, closing);
+        }
+        void openDialog(){
+            show();
+        }
+        void closeDialog(){
+            timeline.play();
+            close();
+        }
     }
 }
