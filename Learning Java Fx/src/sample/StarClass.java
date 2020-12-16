@@ -91,7 +91,6 @@ public class StarClass implements Serializable{
                 x -= 1.5;
             }
             image_view.setLayoutX(x);
-            System.out.println(x);
             if (x >= 500)
                 counter = 1;
             if (x <= -100)
@@ -147,26 +146,7 @@ public class StarClass implements Serializable{
         t1=new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(Math.abs(player.getBall().getCenterY()-y)<=70){
-                    player.getGame().stars_remaining++;
-                    hidden=true;
-                    removeStar(pane);
-                    Task task = new Task() {
-                        @Override
-                        protected Object call() throws Exception {
-                            File file=new File("Media/star_sound.wav");
-                            AudioInputStream sound=AudioSystem.getAudioInputStream(file);
-                            Clip clip=AudioSystem.getClip();
-                            clip.open(sound);
-                            clip.start();
-                            return null;
-                        }
-                    };
-                    Thread thread = new Thread(task);
-                    thread.start();
-                    t1.stop();
-                }
-                image_view.setRotate((image_view.getRotate()-1)%360);
+                move();
             }
         }));
         t1.setCycleCount(-1);

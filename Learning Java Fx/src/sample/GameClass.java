@@ -106,7 +106,7 @@ public class GameClass implements Serializable {
         available_obs.add(new RotatingCrosses(250, 250, 80, player));
         Random rand=new Random();
         for(int i=0;i<3;i++){
-            int p=rand.nextInt(3);
+            int p=rand.nextInt(2);
             if(available_obs.get(p).getClass()== RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
             }else if(available_obs.get(p).getClass()== RotatingRectangle.class){
@@ -255,12 +255,12 @@ public class GameClass implements Serializable {
             int p;
             if(this.level>=5){
                 p=rand.nextInt(available_obs.size());
-            }else if(this.level==4){
-                p=rand.nextInt(5);
-            }else if(this.level==3){
+            }else if(this.level>2){
                 p=rand.nextInt(4);
-            }else{
+            }else if(this.level==2){
                 p=rand.nextInt(3);
+            }else{
+                p=rand.nextInt(2);
             }
             if (available_obs.get(p).getClass() == RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150 - number_of_obstacles * 400, 200, player));
@@ -388,7 +388,16 @@ public class GameClass implements Serializable {
             colorChangers.remove(0);
             s12.removeStar(pane);
             Random rand=new Random();
-            int p=rand.nextInt(available_obs.size());
+            int p;
+            if(this.level>=5){
+                p=rand.nextInt(available_obs.size());
+            }else if(this.level>2){
+                p=rand.nextInt(4);
+            }else if(this.level==2){
+                p=rand.nextInt(3);
+            }else{
+                p=rand.nextInt(2);
+            }
             if(available_obs.get(p).getClass()== RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
             }else if(available_obs.get(p).getClass()== RotatingRectangle.class){
