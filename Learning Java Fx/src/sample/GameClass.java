@@ -327,10 +327,10 @@ public class GameClass implements Serializable {
         available_obs=new ArrayList<ObstacleClass>();
         available_obs.add(new RotatingCircle(250, 150, 80, player));
         available_obs.add(new RotatingRectangle(250, 150, 80, player));
-        available_obs.add(new RotatingCrosses(250, 250, 80, player));
-        available_obs.add(new RotatingCirclesExtra(250, 250, 80, 3, player));
         available_obs.add(new VerticalLines(250, player));
         available_obs.add(new HorizontalLine(0, player));
+        available_obs.add(new RotatingCirclesExtra(250, 250, 80, 3, player));
+        available_obs.add(new RotatingCrosses(250, 250, 80, player));
         constant_stars1=new Button("STARS  "+stars_remaining);
         constant_score1=new Button("SCORE  "+player.getScore()+"\nLEVEL  "+this.level);
         constant_score1.setLayoutX(5);
