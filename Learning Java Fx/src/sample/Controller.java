@@ -268,6 +268,7 @@ public class Controller{
     }
     public void display_end_game_menu() {
         Pane pane=new Pane();
+        dataclass.setBest_score(Math.max(dataclass.getBest_score(), currentGame.getPlayer().getScore()));
         s1=new Scene(pane, 500, 620, Color.BLACK);
         primaryStage.setScene(s1);
         Label l1=new Label("<-------GAME OVER------->");
@@ -283,7 +284,7 @@ public class Controller{
         new_game.setTextFill(Paint.valueOf("Black"));
         main_menu.setTextFill(Paint.valueOf("Black"));
         String current_score=String.valueOf(currentGame.getPlayer().getScore());
-        String current_best_score=String.valueOf(currentGame.getPlayer().getScore());
+        String current_best_score=String.valueOf(dataclass.getBest_score());
         Button continue_game=new Button();
         try {
             Image image = new Image(new FileInputStream("Media/play.png"));
@@ -357,8 +358,15 @@ public class Controller{
         continue_game.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                timeline.stop();
-                continue_game(currentGame);
+                if(currentGame.stars_remaining<currentGame.required_stars){
+                    //give an alert
+                    return;
+                }else{
+                    timeline.stop();
+                    currentGame.stars_remaining-= currentGame.required_stars;
+                    currentGame.required_stars+=2;
+                    continue_game(currentGame);
+                }
             }
         });
         new_game.setOnAction(new EventHandler<ActionEvent>() {

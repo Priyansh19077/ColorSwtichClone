@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class DataClass implements Serializable {
     private HashMap<String, String> games;
     private ArrayList<String> saved_games;
+    private int best_score;
     public DataClass(){
         games=new HashMap<>();
         saved_games=new ArrayList<>();
@@ -79,5 +80,11 @@ public class DataClass implements Serializable {
         } catch (Exception e){
             System.out.println("ERROR in serializing file");
         }
+    }
+    public void setBest_score(int a) {
+        best_score = a;
+    }
+    public int getBest_score(){
+        return this.best_score;
     }
 }

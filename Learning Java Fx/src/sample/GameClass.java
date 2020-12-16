@@ -447,4 +447,7 @@ public class GameClass implements Serializable {
     public void addColorChangersCrossed(){
         this.number_of_color_changers_crossed++;
     }
+    public int getStars_Remaining(){
+        return stars_remaining;
+    }
 }
