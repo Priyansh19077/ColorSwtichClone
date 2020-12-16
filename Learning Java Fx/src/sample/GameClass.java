@@ -59,7 +59,7 @@ public class GameClass implements Serializable {
         this.time=1;
         this.times=new ArrayList<>();
         for(int i=0;i<13;i++){
-            times.add(1-i*(0.06));
+            times.add(1-i*(0.05));
         }
         this.level=1;
         System.out.println(pane.getLayoutY());
@@ -100,13 +100,13 @@ public class GameClass implements Serializable {
         available_obs=new ArrayList<>();
         available_obs.add(new RotatingCircle(250, 150, 80, player));
         available_obs.add(new RotatingRectangle(250, 150, 80, player));
-        available_obs.add(new RotatingCrosses(250, 250, 80, player));
-        available_obs.add(new RotatingCirclesExtra(250, 250, 80, 3, player));
         available_obs.add(new VerticalLines(250, player));
         available_obs.add(new HorizontalLine(0, player));
+        available_obs.add(new RotatingCirclesExtra(250, 250, 80, 3, player));
+        available_obs.add(new RotatingCrosses(250, 250, 80, player));
         Random rand=new Random();
         for(int i=0;i<3;i++){
-            int p=rand.nextInt(available_obs.size());
+            int p=rand.nextInt(3);
             if(available_obs.get(p).getClass()== RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
             }else if(available_obs.get(p).getClass()== RotatingRectangle.class){
@@ -252,7 +252,16 @@ public class GameClass implements Serializable {
             colorChangers.remove(0);
             s1.removeStar(pane);
             Random rand=new Random();
-            int p=rand.nextInt(available_obs.size());
+            int p;
+            if(this.level>=5){
+                p=rand.nextInt(available_obs.size());
+            }else if(this.level==4){
+                p=rand.nextInt(5);
+            }else if(this.level==3){
+                p=rand.nextInt(4);
+            }else{
+                p=rand.nextInt(3);
+            }
             if (available_obs.get(p).getClass() == RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150 - number_of_obstacles * 400, 200, player));
             } else if (available_obs.get(p).getClass() == RotatingRectangle.class) {
@@ -276,7 +285,7 @@ public class GameClass implements Serializable {
             colorChangers.get(colorChangers.size()-1).startMoving();
             obstacles.get(obstacles.size()-1).start_moving();
         }
-        constant_score1.setText("SCORE  "+player.getScore()+"\nLEVEL "+this.level);
+        constant_score1.setText("SCORE  "+player.getScore()+"\nLEVEL  "+this.level);
         constant_stars1.setText("STARS  "+stars_remaining);
     }
     public void serialize(DataClass dataClass){
@@ -323,7 +332,7 @@ public class GameClass implements Serializable {
         available_obs.add(new VerticalLines(250, player));
         available_obs.add(new HorizontalLine(0, player));
         constant_stars1=new Button("STARS  "+stars_remaining);
-        constant_score1=new Button("SCORE  "+player.getScore()+"\nLEVEL "+this.level);
+        constant_score1=new Button("SCORE  "+player.getScore()+"\nLEVEL  "+this.level);
         constant_score1.setLayoutX(5);
         constant_score1.setTextFill(Paint.valueOf("BLACK"));
         constant_stars1.setLayoutX(390);
@@ -447,5 +456,8 @@ public class GameClass implements Serializable {
     }
     public int getStars_Remaining(){
         return stars_remaining;
+    }
+    public int getLevel(){
+        return this.level;
     }
 }

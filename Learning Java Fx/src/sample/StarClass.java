@@ -1,5 +1,6 @@
 package sample;
 
+import java.awt.*;
 import java.io.File;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 import javax.sound.sampled.AudioInputStream;
@@ -21,12 +23,14 @@ import java.io.Serializable;
 
 public class StarClass implements Serializable{
     private PlayerClass player;
+    private GameClass game;
     private int points;
     private double x,y;
     transient private Timeline t1;
     transient Pane pane;
     public boolean hidden;
     private boolean colliding;
+    int counter=0;
     transient private Image image;
     private double length;
     transient private ImageView image_view;
@@ -36,8 +40,10 @@ public class StarClass implements Serializable{
         this.y=y;
         this.hidden=false;
         this.length=length;
+        this.game=player.getGame();
         this.points=points;
         this.pane=pane;
+        this.player=player;
         try {
             image = new Image(new FileInputStream("Media/Star.png"));
             image_view = new ImageView(image);
@@ -48,34 +54,50 @@ public class StarClass implements Serializable{
         }catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        double x1=this.x;
         t1=new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(Math.abs(player.getBall().getCenterY()-y)<=70){
-                    player.getGame().stars_remaining++;
-                    hidden=true;
-                    removeStar(pane);
-                    Task task = new Task() {
-                        @Override
-                        protected Object call() throws Exception {
-                            File file=new File("Media/star_sound.wav");
-                            AudioInputStream sound=AudioSystem.getAudioInputStream(file);
-                            Clip clip=AudioSystem.getClip();
-                            clip.open(sound);
-                            clip.start();
-                            return null;
-                        }
-                    };
-                    Thread thread = new Thread(task);
-                    thread.start();
-                    t1.stop();
-                }
-                image_view.setRotate((image_view.getRotate()-1)%360);
+                move();
             }
         }));
         t1.setCycleCount(-1);
     }
-
+    public void move(){
+        if(Math.abs(player.getBall().getCenterY()-y)<=70 && Math.abs((x+40)-250)<=5){
+            player.getGame().stars_remaining++;
+            hidden=true;
+            removeStar(pane);
+            Task task = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    File file=new File("Media/star_sound.wav");
+                    AudioInputStream sound=AudioSystem.getAudioInputStream(file);
+                    Clip clip=AudioSystem.getClip();
+                    clip.open(sound);
+                    clip.start();
+                    return null;
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
+            t1.stop();
+        }
+        image_view.setRotate((image_view.getRotate()-1)%360);
+        if(game.getLevel()>=4) {
+            if (counter == 0) {
+                x += 1.5;
+            } else {
+                x -= 1.5;
+            }
+            image_view.setLayoutX(x);
+            System.out.println(x);
+            if (x >= 500)
+                counter = 1;
+            if (x <= -100)
+                counter = 0;
+        }
+    }
     public int getPoints() {
         return points;
     }
