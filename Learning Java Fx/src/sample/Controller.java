@@ -379,6 +379,8 @@ public class Controller{
                     timeline.stop();
                     currentGame.stars_remaining-= currentGame.required_stars;
                     currentGame.required_stars+=2;
+                    currentGame.getPlayer().getBall().setFill(Paint.valueOf("WHITE"));
+                    currentGame.getPlayer().setSafeState(false);
                     continue_game(currentGame);
                 }
             }

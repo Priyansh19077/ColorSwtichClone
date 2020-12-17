@@ -25,6 +25,7 @@ public class PlayerClass implements Serializable {
     private double x, y;
     private double radius;
     private int index;
+    private boolean in_a_safe_state;
     transient private Circle ball;
     transient private ArrayList<Timeline> timelines;
     transient private Pane pane;
@@ -36,6 +37,7 @@ public class PlayerClass implements Serializable {
         previous_pushing_point=Screen.getPrimary().getBounds().getHeight()/2;
         this.game=game;
         this.x=250;
+        this.in_a_safe_state=true;
         this.index=index;
         this.y=400;
         this.radius=10;
@@ -107,6 +109,9 @@ public class PlayerClass implements Serializable {
     public void initialize(PlayerClass p1, ArrayList<Color> colors, Pane p){
         this.pane=p;
         this.ball=new Circle(x, y, radius, colors.get(index));
+        if(!in_a_safe_state){
+            ball.setFill(Paint.valueOf("WHITE"));
+        }
         this.timelines=new ArrayList<Timeline>();
         Timeline timeline1=new Timeline(new KeyFrame(Duration.millis(0.7), this::move_down));
         timeline1.setCycleCount(-1);
@@ -124,5 +129,8 @@ public class PlayerClass implements Serializable {
     }
     public void setIndex(int a){
         this.index=a;
+    }
+    public void setSafeState(boolean a){
+        this.in_a_safe_state=a;
     }
 }

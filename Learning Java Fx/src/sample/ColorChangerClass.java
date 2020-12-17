@@ -45,6 +45,7 @@ public class ColorChangerClass implements Serializable {
                     int p=getAColor();
                     player.setIndex(p);
                     player.getBall().setFill(colors.get(p));
+                    player.setSafeState(true);
                     hidden=true;
                     removeColorChanger(pane);
                     t1.stop();

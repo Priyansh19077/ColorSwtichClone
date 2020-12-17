@@ -118,6 +118,8 @@ public class RotatingRectangle extends ObstacleClass{
     @Override
     public void detect_collision(ActionEvent event) {
         this.check_crossed();
+        if(player.getBall().getFill()==Paint.valueOf("WHITE"))
+            return;
         Circle ball=player.getBall();
         int number=0;
         for(int i=0;i<4;i++){

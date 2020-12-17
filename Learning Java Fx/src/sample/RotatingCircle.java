@@ -56,6 +56,8 @@ public class RotatingCircle extends ObstacleClass{
     @Override
     public void detect_collision(ActionEvent event) {
         this.check_crossed();
+        if(player.getBall().getFill()==Paint.valueOf("WHITE"))
+            return;
         Circle ball=player.getBall();
         for(int i=0;i<4;i++){
             Shape shape= Shape.intersect(ball, arcs.get(i));

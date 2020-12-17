@@ -62,7 +62,7 @@ public class GameClass implements Serializable {
             times.add(1-i*(0.05));
         }
         this.level=1;
-        System.out.println(pane.getLayoutY());
+//        System.out.println(pane.getLayoutY());
         this.scene=scene;
         this.timeline=new Timeline(new KeyFrame(Duration.millis(10), this::update_UI));
         timeline.setCycleCount(-1);
@@ -106,7 +106,7 @@ public class GameClass implements Serializable {
         available_obs.add(new RotatingCrosses(250, 250, 80, player));
         Random rand=new Random();
         for(int i=0;i<3;i++){
-            int p=rand.nextInt(2);
+            int p=rand.nextInt(6);
             if(available_obs.get(p).getClass()== RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
             }else if(available_obs.get(p).getClass()== RotatingRectangle.class){
@@ -143,7 +143,7 @@ public class GameClass implements Serializable {
     }
     public void startGame()
     {
-        b1.setDisable(false);
+        b1.setDisable(true);
         timeline.setCycleCount(-1);
         timeline.play();
         // update timerLabel
@@ -171,6 +171,7 @@ public class GameClass implements Serializable {
                 i.startMoving();
             for(ColorChangerClass i:colorChangers)
                 i.startMoving();
+            b1.setDisable(false);
         });
     }
     public void pauseGame(){ // serialization
@@ -193,7 +194,6 @@ public class GameClass implements Serializable {
     }
     public void resumeGame(Controller controller){  // deserialization
         this.controller=controller;
-//        this.pane=p1;
         b1.setDisable(false);
         this.startGame();
     }
@@ -222,6 +222,7 @@ public class GameClass implements Serializable {
         return this.player;
     }
     public void update_UI(ActionEvent event){
+        timerLabel.setLayoutY(y_value);
         int new_level=(number_of_color_changers_crossed/3)+1;
         if(new_level>level){
             Task task = new Task() {
@@ -253,15 +254,7 @@ public class GameClass implements Serializable {
             s1.removeStar(pane);
             Random rand=new Random();
             int p;
-            if(this.level>=5){
-                p=rand.nextInt(available_obs.size());
-            }else if(this.level>2){
-                p=rand.nextInt(4);
-            }else if(this.level==2){
-                p=rand.nextInt(3);
-            }else{
-                p=rand.nextInt(2);
-            }
+            p=rand.nextInt(available_obs.size());
             if (available_obs.get(p).getClass() == RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150 - number_of_obstacles * 400, 200, player));
             } else if (available_obs.get(p).getClass() == RotatingRectangle.class) {
@@ -389,15 +382,7 @@ public class GameClass implements Serializable {
             s12.removeStar(pane);
             Random rand=new Random();
             int p;
-            if(this.level>=5){
-                p=rand.nextInt(available_obs.size());
-            }else if(this.level>2){
-                p=rand.nextInt(4);
-            }else if(this.level==2){
-                p=rand.nextInt(3);
-            }else{
-                p=rand.nextInt(2);
-            }
+            p=rand.nextInt(available_obs.size());
             if(available_obs.get(p).getClass()== RotatingCircle.class) {
                 obstacles.add(new RotatingCircle(250, 150-number_of_obstacles*400, 200, player));
             }else if(available_obs.get(p).getClass()== RotatingRectangle.class){
@@ -442,9 +427,9 @@ public class GameClass implements Serializable {
             i.stopMoving();
         timeline.stop();
         timeline.setCycleCount(0);
-        Timeline endGameTimeline=new Timeline(new KeyFrame(Duration.millis(2000), event -> {
+        Timeline endGameTimeline=new Timeline(new KeyFrame(Duration.millis(500), event -> {
         }));
-        endGameTimeline.setCycleCount(2);
+        endGameTimeline.setCycleCount(1);
         b1.setDisable(true);
         endGameTimeline.play();
         endGameTimeline.setOnFinished(event -> {
