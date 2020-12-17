@@ -59,7 +59,7 @@ public class GameClass implements Serializable {
         this.time=1;
         this.times=new ArrayList<>();
         for(int i=0;i<13;i++){
-            times.add(1-i*(0.05));
+            times.add(1-i*(0.04));
         }
         this.level=1;
 //        System.out.println(pane.getLayoutY());
