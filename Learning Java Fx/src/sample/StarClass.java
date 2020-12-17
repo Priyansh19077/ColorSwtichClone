@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 
-public class StarClass implements Serializable{
+public class StarClass implements Serializable, Collidable{
     private PlayerClass player;
     private GameClass game;
     private int points;
@@ -58,12 +58,13 @@ public class StarClass implements Serializable{
         t1=new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                move();
+                detect_collision(new ActionEvent());
             }
         }));
         t1.setCycleCount(-1);
     }
-    public void move(){
+    @Override
+    public void detect_collision(ActionEvent event){
         if(Math.abs(player.getBall().getCenterY()-y)<=70 && Math.abs((x+40)-250)<=5){
             player.getGame().stars_remaining++;
             hidden=true;
@@ -146,7 +147,7 @@ public class StarClass implements Serializable{
         t1=new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                move();
+                detect_collision(new ActionEvent());
             }
         }));
         t1.setCycleCount(-1);

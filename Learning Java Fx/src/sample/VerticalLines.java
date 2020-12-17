@@ -14,7 +14,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class VerticalLines extends ObstacleClass{
+public class VerticalLines extends ObstacleClass implements Collidable{
     private double y;
     private int f;
     private double x_changes1;

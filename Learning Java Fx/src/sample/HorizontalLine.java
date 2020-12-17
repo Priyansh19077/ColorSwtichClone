@@ -14,7 +14,7 @@ import javafx.util.Duration;
 import java.sql.Time;
 import java.util.ArrayList;
 
-public class HorizontalLine extends ObstacleClass{
+public class HorizontalLine extends ObstacleClass implements Collidable{
     private double y;
     private double y1;
     transient private ArrayList<Line> lines;

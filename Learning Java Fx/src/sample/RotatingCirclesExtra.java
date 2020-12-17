@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.logging.SocketHandler;
 
-public class RotatingCirclesExtra extends ObstacleClass{
+public class RotatingCirclesExtra extends ObstacleClass implements Collidable{
     private double x, y, length;
     private int n;
     private double degree=120;

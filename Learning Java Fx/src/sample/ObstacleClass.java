@@ -19,7 +19,6 @@ public abstract class ObstacleClass implements Serializable {
         //just for calling super
     }
     public abstract void move_obstacle(ActionEvent event);  // to rotate or move the obstacle as necessary
-    public abstract void detect_collision(ActionEvent event); //takes in the player as parameter - dependency
     public abstract void remove_obstacle(Pane pane); // to stop all the timelines and clear all the data of the obstacle for better latency
     public abstract void start_moving();
     public abstract void add_obstacle(Pane pane);

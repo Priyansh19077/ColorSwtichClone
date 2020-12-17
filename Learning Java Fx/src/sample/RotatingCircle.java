@@ -11,7 +11,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class RotatingCircle extends ObstacleClass{
+public class RotatingCircle extends ObstacleClass implements Collidable{
     private double x, y, length;
     private double degree=0;
     transient private Arc a1;

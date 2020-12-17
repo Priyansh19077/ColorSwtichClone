@@ -13,7 +13,7 @@ import javafx.util.Duration;
 import java.security.Key;
 import java.util.ArrayList;
 
-public class RotatingCrosses extends ObstacleClass{
+public class RotatingCrosses extends ObstacleClass implements Collidable{
     transient private Line line1, line2, line3, line4;
     transient private Line corner1, corner2, corner3, corner4;
     transient private Line corner5, corner6, corner7, corner8;

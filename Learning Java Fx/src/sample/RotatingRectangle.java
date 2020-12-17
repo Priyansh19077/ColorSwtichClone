@@ -15,7 +15,7 @@ import java.security.Key;
 import java.util.ArrayList;
 
 
-public class RotatingRectangle extends ObstacleClass{
+public class RotatingRectangle extends ObstacleClass implements Collidable{
 
     transient private Line line1, line2, line3, line4;
     transient private Line corner1, corner2, corner3, corner4;
