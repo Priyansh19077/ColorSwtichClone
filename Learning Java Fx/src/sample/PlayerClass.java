@@ -69,7 +69,7 @@ public class PlayerClass implements Serializable {
         if(no_more_moving)
             return;
         moving_up=true;
-        if(game.getLevel()>=5) {
+        if(game.getLevel()>=4) {
             ball.setOpacity(opacity);
             if (!change) {
                 opacity -= 0.0005;
@@ -99,7 +99,7 @@ public class PlayerClass implements Serializable {
         moving_up=false;
         if(no_more_moving)
             return;
-        if(game.getLevel()>=5) {
+        if(game.getLevel()>=4) {
             ball.setOpacity(opacity);
             if (!change) {
                 opacity -= 0.0005;

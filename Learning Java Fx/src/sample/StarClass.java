@@ -84,7 +84,7 @@ public class StarClass implements Serializable{
             t1.stop();
         }
         image_view.setRotate((image_view.getRotate()-1)%360);
-        if(game.getLevel()>=4) {
+        if(game.getLevel()>=3) {
             if (counter == 0) {
                 x += 1.5;
             } else {
