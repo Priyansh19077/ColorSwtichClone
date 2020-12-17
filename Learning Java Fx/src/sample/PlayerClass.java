@@ -30,6 +30,8 @@ public class PlayerClass implements Serializable {
     transient private ArrayList<Timeline> timelines;
     transient private Pane pane;
     private boolean no_more_moving;
+    private boolean change;
+    private double opacity;
     private boolean moving_up=false;
     private GameClass game;
     private double previous_pushing_point;
@@ -37,6 +39,7 @@ public class PlayerClass implements Serializable {
     public PlayerClass(int index, ArrayList<Color> colors, Pane pane, GameClass game){
         previous_pushing_point=Screen.getPrimary().getBounds().getHeight()/2;
         this.game=game;
+        this.opacity=1;
         this.no_more_moving=false;
         this.x=250;
         this.in_a_safe_state=true;
@@ -66,6 +69,20 @@ public class PlayerClass implements Serializable {
         if(no_more_moving)
             return;
         moving_up=true;
+        if(game.getLevel()>=5) {
+            ball.setOpacity(opacity);
+            if (!change) {
+                opacity -= 0.0005;
+            } else {
+                opacity += 0.0005;
+            }
+            if (opacity >= 1.5) {
+                change = false;
+            }
+            if (opacity <= 0.01) {
+                change = true;
+            }
+        }
         y=y-0.3;
         ball.setCenterY(y);
         if(y<330){
@@ -82,6 +99,20 @@ public class PlayerClass implements Serializable {
         moving_up=false;
         if(no_more_moving)
             return;
+        if(game.getLevel()>=5) {
+            ball.setOpacity(opacity);
+            if (!change) {
+                opacity -= 0.0005;
+            } else {
+                opacity += 0.0005;
+            }
+            if (opacity >= 1.5) {
+                change = false;
+            }
+            if (opacity <= 0.01) {
+                change = true;
+            }
+        }
         if(ball.getCenterY()>=610-pane.getLayoutY()){
             if(pane.getLayoutY()==0){
                 timelines.get(0).pause();
