@@ -405,6 +405,10 @@ public class GameClass implements Serializable {
         controller.continue_game(this);
     }
     public void endGame(){
+        if(controller.getGameCount()==1){
+            controller.display_end_game_menu();
+            return;
+        }
         Task task = new Task() {
             @Override
             protected Object call() throws Exception {

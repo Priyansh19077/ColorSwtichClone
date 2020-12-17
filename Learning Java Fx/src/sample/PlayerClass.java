@@ -29,6 +29,7 @@ public class PlayerClass implements Serializable {
     transient private Circle ball;
     transient private ArrayList<Timeline> timelines;
     transient private Pane pane;
+    private boolean no_more_moving;
     private boolean moving_up=false;
     private GameClass game;
     private double previous_pushing_point;
@@ -36,6 +37,7 @@ public class PlayerClass implements Serializable {
     public PlayerClass(int index, ArrayList<Color> colors, Pane pane, GameClass game){
         previous_pushing_point=Screen.getPrimary().getBounds().getHeight()/2;
         this.game=game;
+        this.no_more_moving=false;
         this.x=250;
         this.in_a_safe_state=true;
         this.index=index;
@@ -61,6 +63,8 @@ public class PlayerClass implements Serializable {
     }
     public void move_up(ActionEvent event){
 //        System.out.println(y);
+        if(no_more_moving)
+            return;
         moving_up=true;
         y=y-0.3;
         ball.setCenterY(y);
@@ -76,11 +80,21 @@ public class PlayerClass implements Serializable {
     }
     private void move_down(ActionEvent event){
         moving_up=false;
+        if(no_more_moving)
+            return;
+        if(ball.getCenterY()>=610-pane.getLayoutY()){
+            if(pane.getLayoutY()==0){
+                timelines.get(0).pause();
+            }else{
+                game.endGame();
+            }
+        }
         y=y+0.1;
         ball.setCenterY(y);
     }
 
     public void startMoving(){
+        no_more_moving=false;
         timelines.get(0).play();
     }
     public void moveDown() {
@@ -91,6 +105,7 @@ public class PlayerClass implements Serializable {
         return ball;
     }
     public void stopMoving(){
+        no_more_moving=true;
         timelines.get(1).pause();
         timelines.get(0).pause();
         timelines.get(1).pause();

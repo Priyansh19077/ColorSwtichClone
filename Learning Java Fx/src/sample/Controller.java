@@ -50,6 +50,7 @@ import static javax.swing.GroupLayout.Alignment.CENTER;
 public class Controller{
     private Stage primaryStage;
     Arc a1;
+    private int game_count;
     private DataClass dataclass;
     private GameClass currentGame;
     private Scene s1;
@@ -255,6 +256,7 @@ public class Controller{
         this.primaryStage.show();
     }
     public void new_game(){
+        game_count++;
         Pane pane=new Pane();
         s1=new Scene(pane, 500, 620, Color.BLACK);
         GameClass g1=new GameClass(pane, this, s1);
@@ -266,8 +268,13 @@ public class Controller{
         pane.setBackground(bg);
         this.primaryStage.show();
         g1.startGame();
+        if(game_count==1){
+            g1.endGame();
+        }
+
     }
     public void runController(){
+        game_count=0;
         display_main_menu();
     }
     public Controller(DataClass data, Stage primaryStage){
@@ -278,6 +285,11 @@ public class Controller{
         currentGame.serialize(dataclass);
     }
     public void display_end_game_menu() {
+        System.out.println(game_count);
+        if(game_count==1){
+            new_game();
+            return;
+        }
         Pane pane=new Pane();
         dataclass.setBest_score(Math.max(dataclass.getBest_score(), currentGame.getPlayer().getScore()));
         s1=new Scene(pane, 500, 620, Color.BLACK);
@@ -335,7 +347,7 @@ public class Controller{
         timeline = new Timeline(new KeyFrame(Duration.millis(24), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println(a1.getLength());
+//                System.out.println(a1.getLength());
                 a1.setLength(a1.getLength()-1);
             }
         }));
@@ -369,13 +381,19 @@ public class Controller{
         continue_game.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(currentGame.stars_remaining<currentGame.required_stars){
-                    //give an alert
-                    CustomDialog custom=new CustomDialog("Insufficient Stars", "You need to have atleast "+currentGame.required_stars+" stars to continue", timeline);
+                if(currentGame.getPlayer().getBall().getCenterY()>=610-currentGame.getPane().getLayoutY()){
+                    CustomDialog custom=new CustomDialog("Invalid Request", "You can use this only when you hit an obstacle", timeline);
                     custom.openDialog();
                     timeline.pause();
                     return;
-                }else{
+                }else if(currentGame.stars_remaining<currentGame.required_stars){
+                    //give an alert
+                    CustomDialog custom=new CustomDialog("Insufficient Stars", "You need to have at least "+currentGame.required_stars+" stars to continue", timeline);
+                    custom.openDialog();
+                    timeline.pause();
+                    return;
+                }
+                else{
                     timeline.stop();
                     currentGame.stars_remaining-= currentGame.required_stars;
                     currentGame.required_stars+=2;
@@ -451,9 +469,9 @@ public class Controller{
             bg.setStrokeWidth(1.5);
             setScene(new Scene(root, null));
             Text headerText=new Text(header);
-            headerText.setFont(Font.font(24));
+            headerText.setFont(Font.font(20));
             Text contentText=new Text(content);
-            contentText.setFont(Font.font(20));
+            contentText.setFont(Font.font(16));
             VBox box=new VBox(10, headerText,
                     new Separator(Orientation.HORIZONTAL),
                     contentText);
@@ -473,5 +491,8 @@ public class Controller{
             timeline.play();
             close();
         }
+    }
+    public int getGameCount(){
+        return this.game_count;
     }
 }
